@@ -1,6 +1,9 @@
 <?php
 include 'database.php';
 
+// Initialize $edit_product variable
+$edit_product = null;
+
 // Handle Add Product
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['add_product'])) {
     $product_name = mysqli_real_escape_string($conn, $_POST['product_name']);
@@ -28,6 +31,23 @@ $result = mysqli_query($conn, "SELECT * FROM inventory");
     <link rel="stylesheet" href="InventoryStyle.css">
 </head>
 <body>
+    <!-- Inventory Form -->
+    <div class="inventory-form">
+        <h2><?php echo $edit_product ? "Edit Product" : "Add New Product"; ?></h2>
+        <form method="POST" action="/PumpingIronGym/ADMIN/index.php?page=inventory">
+            <input type="hidden" name="id" value="<?php echo $edit_product['id'] ?? ''; ?>">
+            <input type="text" name="product_name" placeholder="Product Name" required 
+                   value="<?php echo $edit_product['product_name'] ?? ''; ?>">
+            <textarea name="description" placeholder="Description"><?php echo $edit_product['description'] ?? ''; ?></textarea>
+            <input type="number" step="0.01" name="price" placeholder="Price" required 
+                   value="<?php echo $edit_product['price'] ?? ''; ?>">
+            <input type="number" name="stock_quantity" placeholder="Stock Quantity" required 
+                   value="<?php echo $edit_product['stock_quantity'] ?? ''; ?>">
+            <button type="submit" name="<?php echo $edit_product ? "update_product" : "add_product"; ?>">
+                <?php echo $edit_product ? "Update Product" : "Add Product"; ?>
+            </button>
+        </form>
+    </div>
     <!-- Inventory List -->
     <div class="inventory-content">
         <table>
@@ -42,15 +62,14 @@ $result = mysqli_query($conn, "SELECT * FROM inventory");
                 </tr>
             </thead>
             <tbody>
+                <tr>
                 <div class="title">
                     <h1>Inventory Management</h1>
                     <p>Manage your products and stock levels</p>
                 </div>
-                <div class="add-product">
-                    <a href="index.php?page=Inventory/editInventory" class="add-product-btn">Add Product</a>
-                </div>
                 <tr>
                 <?php while ($row = mysqli_fetch_assoc($result)) : ?>
+                <tr>
                     <td><?php echo htmlspecialchars($row['product_name']); ?></td>
                     <td><?php echo htmlspecialchars($row['description']); ?></td>
                     <td><?php echo number_format($row['price'], 2); ?></td>
@@ -67,6 +86,8 @@ $result = mysqli_query($conn, "SELECT * FROM inventory");
     </div>
 
 </body>
+
+
 </html>
 
 <?php mysqli_close($conn); ?>

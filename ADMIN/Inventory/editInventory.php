@@ -46,17 +46,17 @@ if (isset($_GET['delete'])) {
     <link rel="stylesheet" href="InventoryStyle.css">
 </head>
 <body>
-        <div class="inventory-form">
+    <div class="inventory-form">
         <h2><?php echo $edit_product ? "Edit Product" : "Add New Product"; ?></h2>
         <form method="POST" action="/PumpingIronGym/ADMIN/index.php?page=Inventory/inventory">
             <input type="hidden" name="id" value="<?php echo $edit_product['id'] ?? ''; ?>">
             <input type="text" name="product_name" placeholder="Product Name" required 
-                   value="<?php echo $edit_product['product_name'] ?? ''; ?>">
+                    value="<?php echo $edit_product['product_name'] ?? ''; ?>">
             <textarea name="description" placeholder="Description"><?php echo $edit_product['description'] ?? ''; ?></textarea>
             <input type="number" step="0.01" name="price" placeholder="Price" required 
-                   value="<?php echo $edit_product['price'] ?? ''; ?>">
+                    value="<?php echo $edit_product['price'] ?? ''; ?>">
             <input type="number" name="stock_quantity" placeholder="Stock Quantity" required 
-                   value="<?php echo $edit_product['stock_quantity'] ?? ''; ?>">
+                    value="<?php echo $edit_product['stock_quantity'] ?? ''; ?>">
             <button type="submit" name="<?php echo $edit_product ? "update_product" : "add_product"; ?>">
                 <?php echo $edit_product ? "Update Product" : "Add Product"; ?>
             </button>
