@@ -34,29 +34,6 @@ function sendEmail($to, $subject, $body) {
     }
 }
 
-function deleteExpiredEmailConfirmations() {
-    global $conn;
-    $stmt = $conn->prepare("DELETE FROM email_confirmation WHERE expired <= NOW()");
-    $stmt->execute();
-}
-
-function insertEmailConfirmation($email, $code) {
-    global $conn;
-    deleteExpiredEmailConfirmations();
-
-    $expirationDate = date('Y-m-d H:i:s', strtotime('+10 minutes'));
-
-    $stmt = $conn->prepare("INSERT INTO email_confirmation (email, code, expired) VALUES (?, ?, ?)");
-    $stmt->bind_param("sss", $email, $code, $expirationDate);
-    $stmt->execute();
-
-    if ($stmt->affected_rows > 0) {
-        return array("status" => "success", "message" => "Email confirmation inserted successfully.");
-    } else {
-        return array("status" => "error", "message" => "Failed to insert email confirmation.");
-    }
-}
-
 $method = $_SERVER['REQUEST_METHOD'];
 $contentType = isset($_SERVER["CONTENT_TYPE"]) ? trim($_SERVER["CONTENT_TYPE"]) : '';
 
@@ -94,12 +71,20 @@ if ($method === "POST") {
     $emailResult = sendEmail($email, $subject, $body);
 
     if ($emailResult === true) {
-        $response = insertEmailConfirmation($email, $code);
-        if ($response['status'] === "success") {
+        $stmt = $conn->prepare("INSERT INTO email_confirmation (email, code) VALUES (?, ?)");
+        if ($stmt === false) {
+            respond("Failed to prepare statement: " . $conn->error, 500);
+        }
+
+        $stmt->bind_param("si", $email, $code);
+
+        if ($stmt->execute()) {
             respond("Confirmation code sent and stored successfully.");
         } else {
-            respond($response['message'], 500);
+            respond("Error executing statement: " . $stmt->error, 500);
         }
+
+        $stmt->close();
     } else {
         respond($emailResult, 500);
     }

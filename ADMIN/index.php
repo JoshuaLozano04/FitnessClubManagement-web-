@@ -14,16 +14,15 @@ session_start();
 <body>
     <!-- Sidebar Navigation -->
     <ul id="side-nav">
-        <!-- Logo -->
         <li class="logo">
             <img src="" alt="Logo">
         </li>
         <!-- Navigation Links -->
         <li><a href="index.php?page=dashboard" class="<?= ($_GET['page'] ?? 'dashboard') == 'dashboard' ? 'active' : ''; ?>"><i class="ri-dashboard-3-line"></i>Dashboard</a></li>
-        <li><a href="index.php?page=members" class="<?= ($_GET['page'] ?? '') == 'members' ? 'active' : ''; ?>"><i class="ri-group-fill"></i>Members</a></li>
+        <li><a href="index.php?page=Members/members" class="<?= ($_GET['page'] ?? '') == 'Members/members' ? 'active' : ''; ?>"><i class="ri-group-fill"></i>Members</a></li>
         <li><a href="index.php?page=schedule" class="<?= ($_GET['page'] ?? '') == 'schedule' ? 'active' : ''; ?>"><i class="ri-calendar-2-line"></i>Schedule</a></li>
         <li><a href="index.php?page=attendance" class="<?= ($_GET['page'] ?? '') == 'attendance' ? 'active' : ''; ?>"><i class="ri-check-line"></i>Attendance</a></li>
-        <li><a href="index.php?page=inventory" class="<?= ($_GET['page'] ?? '') == 'inventory' ? 'active' : ''; ?>"><i class="ri-store-fill"></i>Inventory</a></li>
+        <li><a href="index.php?page=Inventory/inventory" class="<?= ($_GET['page'] ?? '') == 'inventory' ? 'active' : ''; ?>"><i class="ri-store-fill"></i>Inventory</a></li>
         <li><a href="index.php?page=orders" class="<?= ($_GET['page'] ?? '') == 'orders' ? 'active' : ''; ?>"><i class="ri-shopping-bag-4-fill"></i>Orders</a></li>
         <li><a href="index.php?page=report" class="<?= ($_GET['page'] ?? '') == 'report' ? 'active' : ''; ?>"><i class="ri-bar-chart-2-fill"></i>Report</a></li>
         <li><a href="index.php?page=settings" class="<?= ($_GET['page'] ?? '') == 'settings' ? 'active' : ''; ?>"><i class="ri-settings-4-line"></i>Settings</a></li>
@@ -40,19 +39,19 @@ session_start();
                     $page = $_GET['page'] ?? 'dashboard'; // Default page is 'dashboard'
                     $page_titles = [
                         'dashboard' => 'Dashboard',
-                        'members' => 'Members',
+                        'Members/members' => 'Members',
                         'schedule' => 'Schedule',
                         'attendance' => 'Attendance',
                         'report' => 'Report',
                         'orders' => 'Orders',
-                        'inventory' => 'Inventory',
+                        'Inventory/inventory' => 'Inventory',
                         'settings' => 'Settings'
                     ];
                     echo "<h2>" . $page_titles[$page] . "</h2>";
                 ?>
             </div>
 
-            <!-- Right side of the header (Notification, User Info, and Logout) -->
+            <!-- Right side of the header -->
             <div class="header-right">
                 <button class="notification-btn">
                     <i class="ri-notification-3-line"></i>
@@ -72,12 +71,9 @@ session_start();
             </div>
         </header>
 
-        <!-- Page Content -->
         <?php
-        // Load the selected page dynamically
-        $allowed_pages = ['dashboard', 'members', 'schedule', 'attendance', 'report', 'inventory', 'orders', 'settings'];
-        $page = $_GET['page'] ?? 'dashboard'; // Default to 'dashboard' page
-
+        $allowed_pages = ['dashboard', 'Members/members', 'Members/editMembers', 'schedule', 'attendance', 'report', 'Inventory/inventory', 'Inventory/editInventory', 'orders', 'settings'];
+        $page = $_GET['page'] ?? 'dashboard';
         if (in_array($page, $allowed_pages)) {
             include "$page.php";
         } else {

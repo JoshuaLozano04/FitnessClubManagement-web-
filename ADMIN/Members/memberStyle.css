@@ -104,3 +104,18 @@ tr:hover {
 .search-button:hover {
     background: #0056b3;
 }
+
+.edit-button {
+    padding: 10px;
+    text-decoration: none;
+    background-color: #1096ea;
+    border: none;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.edit-button:hover {
+    background: #1d6b9b;
+}

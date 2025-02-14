@@ -45,7 +45,7 @@ body {
 .inventory-form button {
     width: 100%;
     padding: 10px;
-    background: #28a745;
+    background: #1096ea;
     border: none;
     color: white;
     font-size: 16px;
@@ -54,7 +54,7 @@ body {
 }
 
 .inventory-form button:hover {
-    background: #218838;
+    background: #1d6b9b;
 }
 
 /* Inventory Table */
@@ -124,4 +124,15 @@ td a:hover {
     background: #c82333;
 }
 
+.add-product {
+    margin: 20px 0;
+    text-align: right;
+}
 
+.add-product-btn {
+    background: #4CAF50;
+}
+
+.add-product-btn:hover {
+    background-color: #45a049;
+}
