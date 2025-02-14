@@ -1,27 +1,33 @@
 <?php
 session_start();
+include 'database.php';
 
 // Check if the form is submitted
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    // Define valid login credentials (for demo purposes, ideally you fetch from a database)
-    $valid_username = "Jonathan";  // Username
-    $valid_password = "admin123";  // Password
+    $email = mysqli_real_escape_string($conn, $_POST['email']);
+    $password = mysqli_real_escape_string($conn, $_POST['password']);
 
-    // Capture the form input
-    $username = $_POST['username'];
-    $password = $_POST['password'];
+    // Query the database for the provided email
+    $query = "SELECT * FROM users WHERE email = '$email'";
+    $result = mysqli_query($conn, $query);
 
-    // Check if the credentials match
-    if ($username == $valid_username && $password == $valid_password) {
-        // Set session variables for the logged-in user
-        $_SESSION['username'] = $username;
-        $_SESSION['role'] = 'Administrator';  // You can change this to fetch from a database
-
-        // Redirect to the dashboard page
-        header("Location: index.php");
-        exit();
+    // Check if the email exists
+    if (mysqli_num_rows($result) == 1) {
+        $user = mysqli_fetch_assoc($result);
+        if (password_verify($password, $user['password'])) {
+            if ($user['role'] == 'admin') {
+                $_SESSION['email'] = $user['email'];
+                $_SESSION['role'] = $user['role'];
+                header("Location: index.php");
+                exit();
+            } else {
+                $error_msg = "You do not have permission to access this page";
+            }
+        } else {
+            $error_msg = "Invalid email or password";
+        }
     } else {
-        $error_msg = "Invalid username or password";
+        $error_msg = "Invalid email or password";
     }
 }
 ?>
@@ -45,8 +51,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
             <form method="POST" action="login.php">
                 <div class="form-group">
-                    <label for="username">Username</label>
-                    <input type="text" name="username" id="username" required placeholder="Enter your username">
+                    <label for="email">Email</label>
+                    <input type="text" name="email" id="email" required placeholder="Enter your Email">
                 </div>
 
                 <div class="form-group">

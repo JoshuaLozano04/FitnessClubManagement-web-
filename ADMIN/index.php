@@ -15,7 +15,7 @@ session_start();
     <!-- Sidebar Navigation -->
     <ul id="side-nav">
         <li class="logo">
-            <img src="" alt="Logo">
+            <img src="img/PumpingIronLogo.png" alt="Logo">
         </li>
         <!-- Navigation Links -->
         <li><a href="index.php?page=dashboard" class="<?= ($_GET['page'] ?? 'dashboard') == 'dashboard' ? 'active' : ''; ?>"><i class="ri-dashboard-3-line"></i>Dashboard</a></li>
@@ -65,7 +65,6 @@ session_start();
                         </div>
                         <a href="logout.php" class="logout-btn">Logout</a>
                     <?php else: ?>
-                        <a href="login.php">Login</a>
                     <?php endif; ?>
                 </div>
             </div>
