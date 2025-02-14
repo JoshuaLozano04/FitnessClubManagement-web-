@@ -1,5 +1,5 @@
 <?php
-    include '../database.php';
+    include '../Api/database.php';
 
     // Check if a search term is provided
     $searchTerm = isset($_GET['search']) ? $_GET['search'] : '';
