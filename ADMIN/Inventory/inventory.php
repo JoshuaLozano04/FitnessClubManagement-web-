@@ -14,7 +14,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['add_product'])) {
     $query = "INSERT INTO inventory (product_name, description, price, stock_quantity) 
               VALUES ('$product_name', '$description', '$price', '$stock_quantity')";
     mysqli_query($conn, $query);
-    header("Location: index.php?page=inventory");
+    header("Location: index.php?page=Inventory/inventory");
     exit();
 }
 
@@ -34,7 +34,7 @@ $result = mysqli_query($conn, "SELECT * FROM inventory");
     <!-- Inventory Form -->
     <div class="inventory-form">
         <h2><?php echo $edit_product ? "Edit Product" : "Add New Product"; ?></h2>
-        <form method="POST" action="/PumpingIronGym/ADMIN/index.php?page=inventory">
+        <form method="POST" action="/PumpingIronGym/ADMIN/index.php?page=Inventory/inventory">
             <input type="hidden" name="id" value="<?php echo $edit_product['id'] ?? ''; ?>">
             <input type="text" name="product_name" placeholder="Product Name" required 
                    value="<?php echo $edit_product['product_name'] ?? ''; ?>">
