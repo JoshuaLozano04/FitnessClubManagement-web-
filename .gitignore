@@ -1,0 +1,13 @@
+vendor/guzzlehttp/guzzle/
+/vendor/guzzlehttp/promises
+vendor/guzzlehttp/psr7/
+vendor/league/oauth2-client/
+vendor/phpmailer/phpmailer/
+vendor/psr/http-client/
+vendor/psr/http-factory/
+vendor/psr/http-message/
+vendor/ralouphie/getallheaders/
+vendor/sendgrid/php-http-client/
+vendor/sendgrid/sendgrid/
+vendor/starkbank/ecdsa/
+vendor/symfony/deprecation-contracts/
