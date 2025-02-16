@@ -33,7 +33,7 @@ if (!$result) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>User Management</title>
-    <link rel="stylesheet" href="memberStyle.css">
+    <link rel="stylesheet" href="Members/memberStyle.css">
 </head>
 <body>
 <div class="title">

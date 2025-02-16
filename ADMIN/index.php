@@ -45,6 +45,7 @@ session_start();
                         'report' => 'Report',
                         'orders' => 'Orders',
                         'Inventory/inventory' => 'Inventory',
+                        'Inventory/editInventory' => 'Edit Inventory',
                         'settings' => 'Settings'
                     ];
                     echo "<h2>" . $page_titles[$page] . "</h2>";
