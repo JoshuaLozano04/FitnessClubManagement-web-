@@ -28,7 +28,7 @@ $result = mysqli_query($conn, "SELECT * FROM inventory");
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Inventory</title>
-    <link rel="stylesheet" href="Inventory/InventoryStyle.css">
+    <link rel="stylesheet" href="Inventory/inventoryStyle.css">
 </head>
 <body>
     <!-- Inventory Form -->

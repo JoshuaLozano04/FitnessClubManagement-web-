@@ -43,7 +43,7 @@ if (isset($_GET['delete'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <link rel="stylesheet" href="Inventory/InventoryStyle.css">
+    <link rel="stylesheet" href="Inventory/inventoryStyle.css">
 </head>
 <body>
     <div class="inventory-form">

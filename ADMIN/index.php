@@ -22,7 +22,7 @@ session_start();
         <li><a href="index.php?page=Members/members" class="<?= ($_GET['page'] ?? '') == 'Members/members' ? 'active' : ''; ?>"><i class="ri-group-fill"></i>Members</a></li>
         <li><a href="index.php?page=schedule" class="<?= ($_GET['page'] ?? '') == 'schedule' ? 'active' : ''; ?>"><i class="ri-calendar-2-line"></i>Schedule</a></li>
         <li><a href="index.php?page=attendance" class="<?= ($_GET['page'] ?? '') == 'attendance' ? 'active' : ''; ?>"><i class="ri-check-line"></i>Attendance</a></li>
-        <li><a href="index.php?page=Inventory/inventory" class="<?= ($_GET['page'] ?? '') == 'inventory' ? 'active' : ''; ?>"><i class="ri-store-fill"></i>Inventory</a></li>
+        <li><a href="index.php?page=Inventory/inventory" class="<?= ($_GET['page'] ?? '') == 'Inventory/inventory' ? 'active' : ''; ?>"><i class="ri-store-fill"></i>Inventory</a></li>
         <li><a href="index.php?page=orders" class="<?= ($_GET['page'] ?? '') == 'orders' ? 'active' : ''; ?>"><i class="ri-shopping-bag-4-fill"></i>Orders</a></li>
         <li><a href="index.php?page=report" class="<?= ($_GET['page'] ?? '') == 'report' ? 'active' : ''; ?>"><i class="ri-bar-chart-2-fill"></i>Report</a></li>
         <li><a href="index.php?page=settings" class="<?= ($_GET['page'] ?? '') == 'settings' ? 'active' : ''; ?>"><i class="ri-settings-4-line"></i>Settings</a></li>
@@ -58,13 +58,13 @@ session_start();
                     <i class="ri-notification-3-line"></i>
                 </button>
                 <div class="user-info">
-                    <?php if (isset($_SESSION['username'])): ?>
+                    <?php if (isset($_SESSION['email'])): ?>
                         <img src="img/01.png" alt="Admin" class="user-avatar">
                         <div class="user-details">
-                            <h3><?php echo $_SESSION['username']; ?></h3>
+                            <h3><?php echo $_SESSION['email']; ?></h3>
                             <p><?php echo $_SESSION['role']; ?></p>
                         </div>
-                        <a href="logout.php" class="logout-btn">Logout</a>
+                        <a href="logout.php" class="logout-btn" id="logoutBtn">Logout</a>
                     <?php else: ?>
                     <?php endif; ?>
                 </div>
@@ -81,6 +81,5 @@ session_start();
         }
         ?>
     </div>
-
 </body>
 </html>
