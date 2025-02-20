@@ -66,6 +66,7 @@ session_start();
                         </div>
                         <a href="logout.php" class="logout-btn" id="logoutBtn" onclick="return confirmLogout()">Logout</a>
                     <?php else: ?>
+                        <a href="login.php">Login</a>
                     <?php endif; ?>
                 </div>
             </div>
