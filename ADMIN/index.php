@@ -64,7 +64,7 @@ session_start();
                             <h3><?php echo $_SESSION['email']; ?></h3>
                             <p><?php echo $_SESSION['role']; ?></p>
                         </div>
-                        <a href="logout.php" class="logout-btn" id="logoutBtn">Logout</a>
+                        <a href="logout.php" class="logout-btn" id="logoutBtn" onclick="return confirmLogout()">Logout</a>
                     <?php else: ?>
                     <?php endif; ?>
                 </div>
