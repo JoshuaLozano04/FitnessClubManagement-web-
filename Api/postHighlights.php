@@ -4,9 +4,21 @@ function addMonthlyHighlight($conn, $user_email, $caption, $image_urls) {
     $conn->begin_transaction();
     
     try {
+        // Fetch the name from the users table using the user_email
+        $stmt = $conn->prepare("SELECT fullname FROM users WHERE email = ?");
+        $stmt->bind_param("s", $user_email);
+        $stmt->execute();
+        $stmt->store_result();
+        if ($stmt->num_rows === 0) {
+            throw new Exception("User email does not exist.");
+        }
+        $stmt->bind_result($name);
+        $stmt->fetch();
+        $stmt->close();
+
         // Insert into monthly_highlights table
-        $stmt = $conn->prepare("INSERT INTO monthly_highlights (user_email, caption) VALUES (?, ?)");
-        $stmt->bind_param("ss", $user_email, $caption);
+        $stmt = $conn->prepare("INSERT INTO monthly_highlights (user_email, name, caption) VALUES (?, ?, ?)");
+        $stmt->bind_param("sss", $user_email, $name, $caption);
         $stmt->execute();
         $highlight_id = $stmt->insert_id; // Get the last inserted ID
         $stmt->close();
@@ -34,17 +46,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $user_email = $_POST['user_email'];
     $caption = $_POST['caption'];
     $image_urls = [];
-
-    // Check if user_email exists in users table
-    $stmt = $conn->prepare("SELECT email FROM users WHERE email = ?");
-    $stmt->bind_param("s", $user_email);
-    $stmt->execute();
-    $stmt->store_result();
-    if ($stmt->num_rows === 0) {
-        echo json_encode(["success" => false, "message" => "Error: User email does not exist."]);
-        exit;
-    }
-    $stmt->close();
 
     // Ensure the uploads directory exists and is writable
     $uploads_dir = "uploads";

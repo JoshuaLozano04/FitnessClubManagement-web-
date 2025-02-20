@@ -1,7 +1,7 @@
 <?php
 require "database.php";
 // Fetch highlights with images
-$sql = "SELECT mh.id, mh.user_email, mh.caption, mh.created_at, mhi.image_url 
+$sql = "SELECT mh.id, mh.name, mh.user_email, mh.caption, mh.created_at, mhi.image_url 
         FROM monthly_highlights mh
         LEFT JOIN monthly_highlight_images mhi ON mh.id = mhi.highlight_id
         ORDER BY mh.created_at DESC";
@@ -17,6 +17,7 @@ if ($result->num_rows > 0) {
         if (!isset($highlights[$highlight_id])) {
             $highlights[$highlight_id] = [
                 "id" => $row["id"],
+                "name" => $row["name"],
                 "user_email" => $row["user_email"],
                 "caption" => $row["caption"],
                 "created_at" => $row["created_at"],
