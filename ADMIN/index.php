@@ -58,10 +58,10 @@ session_start();
                     <i class="ri-notification-3-line"></i>
                 </button>
                 <div class="user-info">
-                    <?php if (isset($_SESSION['email'])): ?>
+                    <?php if (isset($_SESSION['fullname'])): ?>
                         <img src="img/01.png" alt="Admin" class="user-avatar">
                         <div class="user-details">
-                            <h3><?php echo $_SESSION['email']; ?></h3>
+                            <h3><?php echo "Hi, " . $_SESSION['fullname']; ?></h3>
                             <p><?php echo $_SESSION['role']; ?></p>
                         </div>
                         <a href="logout.php" class="logout-btn" id="logoutBtn" onclick="return confirmLogout()">Logout</a>

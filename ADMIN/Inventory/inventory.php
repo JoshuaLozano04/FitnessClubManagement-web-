@@ -38,7 +38,7 @@ $result = mysqli_query($conn, "SELECT * FROM inventory");
             <input type="hidden" name="id" value="<?php echo $edit_product['id'] ?? ''; ?>">
             <input type="text" name="product_name" placeholder="Product Name" required 
                    value="<?php echo $edit_product['product_name'] ?? ''; ?>">
-            <textarea name="description" placeholder="Description"><?php echo $edit_product['description'] ?? ''; ?></textarea>
+            <textarea name="description" placeholder="Description" required><?php echo $edit_product['description'] ?? ''; ?></textarea>
             <input type="number" step="0.01" name="price" placeholder="Price" required 
                    value="<?php echo $edit_product['price'] ?? ''; ?>">
             <input type="number" name="stock_quantity" placeholder="Stock Quantity" required 
@@ -57,7 +57,6 @@ $result = mysqli_query($conn, "SELECT * FROM inventory");
                     <th>Description</th>
                     <th>Price</th>
                     <th>Stock</th>
-                    <th>Created At</th>
                     <th>Actions</th>
                 </tr>
             </thead>
@@ -74,7 +73,6 @@ $result = mysqli_query($conn, "SELECT * FROM inventory");
                     <td><?php echo htmlspecialchars($row['description']); ?></td>
                     <td><?php echo number_format($row['price'], 2); ?></td>
                     <td><?php echo $row['stock_quantity']; ?></td>
-                    <td><?php echo $row['created_at']; ?></td>
                     <td>
                         <a href="index.php?page=Inventory/editInventory&edit=<?php echo $row['id']; ?>" class="edit-btn">Edit</a>
                         <a href="index.php?page=Inventory/editInventory&delete=<?php echo $row['id']; ?>" class="delete-btn" onclick="return confirm('Are you sure?')">Delete</a>

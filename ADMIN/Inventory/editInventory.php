@@ -23,12 +23,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['update_product'])) {
                 description='$description', 
                 price='$price', 
                 stock_quantity='$stock_quantity' 
-              WHERE id=$id";
+                WHERE id=$id";
     mysqli_query($conn, $query);
     header("Location: index.php?page=Inventory/inventory");
     exit();
 }
-
 // Handle Delete Product
 if (isset($_GET['delete'])) {
     $id = intval($_GET['delete']);
@@ -48,11 +47,11 @@ if (isset($_GET['delete'])) {
 <body>
     <div class="inventory-form">
         <h2><?php echo $edit_product ? "Edit Product" : "Add New Product"; ?></h2>
-        <form method="POST" action="/PumpingIronGym/ADMIN/index.php?page=Inventory/inventory">
+        <form method="POST" action="/PumpingIronGym/ADMIN/index.php?page=Inventory/editInventory">
             <input type="hidden" name="id" value="<?php echo $edit_product['id'] ?? ''; ?>">
-            <input type="text" name="product_name" placeholder="Product Name" required 
+            <input type="text" name="product_name" placeholder="Product Name" required
                     value="<?php echo $edit_product['product_name'] ?? ''; ?>">
-            <textarea name="description" placeholder="Description"><?php echo $edit_product['description'] ?? ''; ?></textarea>
+            <textarea name="description" placeholder="Description" required maxlength="30"><?php echo $edit_product['description'] ?? ''; ?></textarea>
             <input type="number" step="0.01" name="price" placeholder="Price" required 
                     value="<?php echo $edit_product['price'] ?? ''; ?>">
             <input type="number" name="stock_quantity" placeholder="Stock Quantity" required 

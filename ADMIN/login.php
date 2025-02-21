@@ -16,7 +16,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $user = mysqli_fetch_assoc($result);
         if (password_verify($password, $user['password'])) {
             if ($user['role'] == 'admin') {
-                $_SESSION['email'] = $user['email'];
+                $_SESSION['fullname'] = $user['fullname'];
                 $_SESSION['role'] = $user['role'];
                 header("Location: index.php");
                 exit();
