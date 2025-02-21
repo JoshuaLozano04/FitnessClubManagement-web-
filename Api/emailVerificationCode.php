@@ -4,7 +4,7 @@ include "database.php";
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
-require '../vendor/autoload.php';
+require __DIR__ . '/../vendor/autoload.php';
 
 function sendEmail($to, $subject, $body) {
     $mail = new PHPMailer(true);
@@ -18,7 +18,7 @@ function sendEmail($to, $subject, $body) {
         $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
         $mail->Port = 587;
 
-        //Recipients
+        //Recipients~
         $mail->setFrom('your_email@gmail.com', 'Pumping Iron Gym');
         $mail->addAddress($to);
 
