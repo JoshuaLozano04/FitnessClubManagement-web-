@@ -36,7 +36,7 @@ if (!$result) {
     <link rel="stylesheet" href="Members/memberStyle.css">
 </head>
 <body>
-<div class="title">
+    <div class="title">
         <h1>User Management</h1>
         <p>Manage your gym members and their membership status</p>
     </div>
