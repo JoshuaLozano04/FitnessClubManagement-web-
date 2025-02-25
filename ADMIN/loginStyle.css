@@ -8,7 +8,7 @@
 
 body {
     background-image: url('img/bg.jpg');
-    background-color: rgba(0, 0, 0, 0.5); /* Adding a semi-transparent black overlay */
+    background-color: rgba(0, 0, 0, 0.5);
     background-repeat: no-repeat;
     background-size: auto;
     background-position: center;
@@ -34,6 +34,36 @@ body {
     width: 350px;
     text-align: center;
 }
+
+.password-container {
+    position: relative;
+    width: 100%;
+}
+
+.password-container input {
+    width: 100%;
+    padding: 12px;
+    padding-right: 40px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    box-sizing: border-box;
+}
+
+.password-container i {
+    position: absolute;
+    right: 15px; 
+    top: 50%;
+    transform: translateY(-50%); 
+    cursor: pointer;
+    font-size: 22px;
+    color: #777;
+}
+
+.password-container i:hover {
+    color: #1096ea;
+}
+
 
 .logo img {
     width: 120px;
