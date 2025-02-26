@@ -1,5 +1,24 @@
 <?php
 include 'database.php';
+
+// Handle Add Product
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['add_product'])) {
+    $product_name = mysqli_real_escape_string($conn, $_POST['product_name']);
+    $description = mysqli_real_escape_string($conn, $_POST['description']);
+    $price = floatval($_POST['price']);
+    $stock_quantity = intval($_POST['stock_quantity']);
+
+    $query = "INSERT INTO inventory (product_name, description, price, stock_quantity) 
+              VALUES ('$product_name', '$description', '$price', '$stock_quantity')";
+
+    if (mysqli_query($conn, $query)) {
+        header("Location: index.php?page=Inventory/inventory");
+        exit();
+    } else {
+        echo "Error adding product: " . mysqli_error($conn);
+    }
+}
+
 // Handle Edit Product
 $edit_id = null;
 $edit_product = null;

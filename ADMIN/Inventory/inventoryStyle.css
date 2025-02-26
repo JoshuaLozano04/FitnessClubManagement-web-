@@ -8,15 +8,28 @@ body {
 
 /* Page Title */    
 
-.title h1 {
+.title-left h1 {
     font-size: 28px;
     color: #333;
 }
 
-.title p {
+.title-left p {
     color: #777;
 }
 
+.title-left {
+    flex: 1; /* Makes the left section take up remaining space */
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    padding-left: 5px;
+}
+
+.title-right {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
 /* Inventory Form */
 .inventory-form {
     background: white;
@@ -124,15 +137,63 @@ td a:hover {
     background: #c82333;
 }
 
-.add-product {
-    margin: 20px 0;
-    text-align: right;
+form {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: #f8f9fa;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
 }
 
-.add-product-btn {
-    background: #4CAF50;
+/* Styling for the search input */
+.search-input {
+    padding: 10px;
+    width: 250px;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    font-size: 16px;
+    transition: 0.3s;
 }
 
-.add-product-btn:hover {
-    background-color: #45a049;
+.search-input:focus {
+    border-color: #007bff;
+    outline: none;
+    box-shadow: 0 0 8px rgba(0, 123, 255, 0.3);
+}
+
+/* Styling for the search button */
+.search-button {
+    padding: 10px 15px;
+    background: #007bff;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.search-button:hover {
+    background: #0056b3;
+}
+
+/* Styling for the "Add Product" button */
+.add-btn {
+    text-decoration: none;
+    background: #28a745;
+    color: white;
+    padding: 10px 15px;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: bold;
+    transition: 0.3s;
+}
+
+.add-btn:hover {
+    background: #218838;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    transform: translateY(-2px);
 }

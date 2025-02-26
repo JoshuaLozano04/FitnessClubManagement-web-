@@ -6,6 +6,6 @@
     <title>Document</title>
 </head>
 <body>
-    <p>Welcome to the settings page</p>
+    <p>Welcome to the user account page</p>
 </body>
 </html>

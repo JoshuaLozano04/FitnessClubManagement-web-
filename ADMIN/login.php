@@ -39,6 +39,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
     <link rel="stylesheet" href="loginStyle.css">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css" rel="stylesheet"/>
 </head>
 <body>
 
@@ -57,14 +58,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
                 <div class="form-group">
                     <label for="password">Password</label>
-                    <input type="password" name="password" id="password" required placeholder="Enter your password">
+                    <div class="password-container">
+                        <input type="password" name="password" id="password" required placeholder="Enter your password">
+                        <i class="ri-eye-off-fill" id="togglePassword"></i>
+                    </div>
                 </div>
-
+                
                 <button type="submit" class="login-btn">Login</button>
                 <?php if (isset($error_msg)) { echo "<p class='error-msg'>$error_msg</p>"; } ?>
             </form>
         </div>
     </div>
 
+    <script src="login.js"></script>
 </body>
 </html>
