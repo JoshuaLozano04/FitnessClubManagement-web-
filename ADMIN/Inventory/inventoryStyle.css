@@ -30,9 +30,14 @@ body {
     align-items: center;
     justify-content: flex-end;
 }
+
+
+.inventory-content {
+    margin: 25px auto;
+}
 /* Inventory Form */
 .inventory-form {
-    background: white;
+    background: rgb(255, 255, 255);
     max-width: 500px;
     margin: 20px auto;
     padding: 20px;
@@ -70,16 +75,15 @@ body {
     background: #9b4d1d;
 }
 
-/* Inventory Table */
-.inventory-content {
-    width: 90%;
-    margin: 20px auto;
-    background: white;
-    padding: 20px;
+form {
+    gap: 10px;
+    background: #f8f9fa;
+    padding: 15px;
     border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    overflow-x: auto;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
 }
+
 
 table {
     width: 100%;
@@ -137,48 +141,6 @@ td a:hover {
     background: #c82333;
 }
 
-form {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    background: #f8f9fa;
-    padding: 15px;
-    border-radius: 8px;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-    margin-bottom: 20px;
-}
-
-/* Styling for the search input */
-.search-input {
-    padding: 10px;
-    width: 250px;
-    border: 2px solid #ddd;
-    border-radius: 8px;
-    font-size: 16px;
-    transition: 0.3s;
-}
-
-.search-input:focus {
-    border-color: #007bff;
-    outline: none;
-    box-shadow: 0 0 8px rgba(0, 123, 255, 0.3);
-}
-
-/* Styling for the search button */
-.search-button {
-    padding: 10px 15px;
-    background: #007bff;
-    color: white;
-    border: none;
-    border-radius: 8px;
-    font-size: 16px;
-    cursor: pointer;
-    transition: 0.3s;
-}
-
-.search-button:hover {
-    background: #0056b3;
-}
 
 /* Styling for the "Add Product" button */
 .add-btn {
