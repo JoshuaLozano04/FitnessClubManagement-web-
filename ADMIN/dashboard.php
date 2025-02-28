@@ -9,7 +9,17 @@
             margin-top: 35px;
             max-width: 200px; /* Adjust the size as needed */
             max-height: 200px; /* Adjust the size as needed */
-        } 
+        }
+        #trainersCounter {
+            background-color:rgb(255, 255, 255);
+            padding: 10px;
+            border-radius: 10px;
+            margin-top: 35px;
+            max-width: 200px; /* Adjust the size as needed */
+            text-align: center;
+            font-size: 24px;
+            font-weight: bold;
+        }
         body {
             background-color: #f1f1f1;
         }
@@ -23,6 +33,7 @@
     <p style="margin-top: 20px;">Welcome to the dashboard</p>
     
     <canvas id="membersPieChart" width="50" height="50"></canvas>
+    <div id="trainersCounter"></div>
     
     <?php
     include 'database.php'; // Ensure this line has a semicolon
@@ -46,6 +57,16 @@
         $returningMembersCount = 0;
     }
 
+    // Query to get the count of trainers
+    $trainersQuery = "SELECT COUNT(*) as count FROM users WHERE role = 'trainer'";
+    $trainersResult = $conn->query($trainersQuery);
+
+    if ($trainersResult) {
+        $trainersCount = $trainersResult->fetch_assoc()['count'];
+    } else {
+        $trainersCount = 0;
+    }
+
     $conn->close();
     ?>
 
@@ -54,6 +75,7 @@
         const inactiveMembersCount = <?php echo $inactiveMembersCount; ?>;
         const activeMembersCount = <?php echo $activeMembersCount; ?>;
         const returningMembersCount = <?php echo $returningMembersCount; ?>;
+        const trainersCount = <?php echo $trainersCount; ?>;
 
         // Data for the pie chart
         const data = {
@@ -98,6 +120,9 @@
             document.getElementById('membersPieChart'),
             config
         );
+
+        // Display the trainers count
+        document.getElementById('trainersCounter').innerText = `${trainersCount} Trainers`;
     </script>
 </body>
 </html>
