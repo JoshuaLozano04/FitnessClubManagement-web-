@@ -1,5 +1,9 @@
 <?php
+<<<<<<< HEAD:ADMIN/Inventory/editInventory.php
 include 'database.php';
+=======
+include '../Api/database.php';
+>>>>>>> 9dcebd294cc90bc14f6a0279c156ff40c4a6ce9f:ADMIN/inventory.php
 
 // Handle Add Product
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['add_product'])) {

@@ -64,8 +64,14 @@ session_start();
                             <h3><?php echo "Hi, " . $_SESSION['fullname']; ?></h3>
                             <p><?php echo $_SESSION['role']; ?></p>
                         </div>
+<<<<<<< HEAD
                         <a href="logout.php" class="logout-btn" id="logoutBtn" onclick="return confirmLogout()">Logout</a>
                         <script src="logout.js"></script>
+=======
+                        <a href="logout.php" class="logout-btn" onclick="return confirmLogout()">Logout</a>
+                        <script src="logout.js"></script>
+
+>>>>>>> 9dcebd294cc90bc14f6a0279c156ff40c4a6ce9f
                     <?php else: ?>
                         <a href="login.php">Login</a>
                     <?php endif; ?>

@@ -1,5 +1,9 @@
 <?php
+<<<<<<< HEAD:ADMIN/Members/members.php
 include 'database.php';
+=======
+    include '../Api/database.php';
+>>>>>>> 9dcebd294cc90bc14f6a0279c156ff40c4a6ce9f:ADMIN/members.php
 
 // Check if a search term and status filter are provided
 $searchTerm = isset($_GET['search']) ? $_GET['search'] : '';
