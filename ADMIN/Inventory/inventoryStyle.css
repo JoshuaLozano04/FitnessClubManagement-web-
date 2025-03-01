@@ -7,29 +7,18 @@ body {
 }
 
 /* Page Title */    
-
-.title-left h1 {
+.title {
+    margin-top: 20px;
+}
+.title h1 {
     font-size: 28px;
     color: #333;
 }
 
-.title-left p {
+.title p {
     color: #777;
 }
 
-.title-left {
-    flex: 1; /* Makes the left section take up remaining space */
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-    padding-left: 5px;
-}
-
-.title-right {
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-}
 /* Inventory Form */
 .inventory-form {
     background: white;
