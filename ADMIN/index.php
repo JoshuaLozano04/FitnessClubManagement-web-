@@ -19,13 +19,13 @@ session_start();
         </li>
         <!-- Navigation Links -->
         <li><a href="index.php?page=dashboard" class="<?= ($_GET['page'] ?? 'dashboard') == 'dashboard' ? 'active' : ''; ?>"><i class="ri-dashboard-3-line"></i>Dashboard</a></li>
-        <li><a href="index.php?page=Members/members" class="<?= ($_GET['page'] ?? '') == 'Members/members' ? 'active' : ''; ?>"><i class="ri-group-fill"></i>Members</a></li>
+        <li><a href="index.php?page=Members/members" class="<?= ($_GET['page'] ?? '') == 'Members/members' ? 'active' : ''; ?>"><i class="ri-user-community-line"></i>Members</a></li>
         <li><a href="index.php?page=schedule" class="<?= ($_GET['page'] ?? '') == 'schedule' ? 'active' : ''; ?>"><i class="ri-calendar-2-line"></i>Schedule</a></li>
         <li><a href="index.php?page=Inventory/inventory" class="<?= ($_GET['page'] ?? '') == 'Inventory/inventory' ? 'active' : ''; ?>"><i class="ri-store-fill"></i>Inventory</a></li>
         <li><a href="index.php?page=orders" class="<?= ($_GET['page'] ?? '') == 'orders' ? 'active' : ''; ?>"><i class="ri-shopping-bag-4-fill"></i>Orders</a></li>
         <li><a href="index.php?page=report" class="<?= ($_GET['page'] ?? '') == 'report' ? 'active' : ''; ?>"><i class="ri-bar-chart-2-fill"></i>Report</a></li>
         <li><a href="index.php?page=attendance" class="<?= ($_GET['page'] ?? '') == 'attendance' ? 'active' : ''; ?>"><i class="ri-check-line"></i>Attendance</a></li>
-        <li><a href="index.php?page=users" class="<?= ($_GET['page'] ?? '') == 'users' ? 'active' : ''; ?>"><i class="ri-settings-4-line"></i>User Account</a></li>
+        <li><a href="index.php?page=users" class="<?= ($_GET['page'] ?? '') == 'users' ? 'active' : ''; ?>"><i class="ri-group-fill"></i>User Account</a></li>
     </ul>
 
     <!-- Main Content -->
@@ -59,19 +59,42 @@ session_start();
                 </button>
                 <div class="user-info">
                     <?php if (isset($_SESSION['fullname'])): ?>
-                        <img src="img/01.png" alt="Admin" class="user-avatar">
-                        <div class="user-details">
-                            <h3><?php echo "Hi, " . $_SESSION['fullname']; ?></h3>
-                            <p><?php echo $_SESSION['role']; ?></p>
+                        <div class="dropdown" id="dropdown">
+                            <div class="dropdown_profile">
+                                <div class="user-details">
+                                    <h3><?php echo "Hi, " . $_SESSION['fullname']; ?></h3>
+                                    <p><?php echo $_SESSION['role']; ?></p>
+                                </div>
+
+                                <div class="dropdown_image">
+                                    <img src="img/01.png" alt="image">
+                                </div>
+                                <i class="ri-arrow-down-s-line"></i>
+                                <div class="dropdown_list">
+                                    <a href ="#" class="dropdown_link">
+                                        <i class="ri-user-line"></i>
+                                        <span>Profile</span>
+                                    </a>
+                                    <a href ="#" class="dropdown_link">
+                                        <i class="ri-lock-2-line"></i>
+                                        <span>Change Password</span>
+                                    </a>
+                                    <a href ="logout.php" id="logoutBtn" onclick="return confirmLogout()" class="dropdown_link">
+                                        <i class="ri-logout-box-r-line"></i>
+                                        <span>Logout</span>
+                                    </a>
+                                </div>
+                                <script src="indexScript.js"></script>
+                                <script src="logout.js"></script>
+                            </div>
                         </div>
-                        <a href="logout.php" class="logout-btn" id="logoutBtn" onclick="return confirmLogout()">Logout</a>
-                        <script src="logout.js"></script>
                     <?php else: ?>
                         <a href="login.php">Login</a>
                     <?php endif; ?>
                 </div>
             </div>
         </header>
+                        
 
         <?php
         $allowed_pages = ['dashboard', 'Members/members', 'Members/editMembers', 'schedule', 'attendance', 'report', 'Inventory/inventory', 'Inventory/editInventory', 'orders', 'users'];
