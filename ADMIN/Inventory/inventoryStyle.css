@@ -14,7 +14,6 @@ body {
     font-size: 28px;
     color: #333;
 }
-
 .title p {
     color: #777;
 }
@@ -28,12 +27,10 @@ body {
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
-
 .inventory-form h2 {
     text-align: center;
     margin-bottom: 15px;
 }
-
 .inventory-form input, 
 .inventory-form textarea {
     width: 100%;
@@ -43,7 +40,6 @@ body {
     border-radius: 5px;
     font-size: 16px;
 }
-
 .inventory-form button {
     width: 100%;
     padding: 10px;
@@ -54,14 +50,13 @@ body {
     cursor: pointer;
     border-radius: 5px;
 }
-
 .inventory-form button:hover {
     background: #9b4d1d;
 }
 
 /* Inventory Table */
 .inventory-content {
-    width: 90%;
+    width: 100%;
     margin: 20px auto;
     background: white;
     padding: 20px;
@@ -69,24 +64,20 @@ body {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     overflow-x: auto;
 }
-
 table {
     width: 100%;
     border-collapse: collapse;
     margin-top: 10px;
 }
-
 th, td {
     padding: 12px;
     border: 1px solid #ddd;
     text-align: center;
 }
-
 th {
     background: #007bff;
     color: white;
 }
-
 td img {
     width: 50px;
     height: 50px;
@@ -94,82 +85,39 @@ td img {
     border-radius: 5px;
 }
 
-/* Delete Button */
-td a {
-    text-decoration: none;
-    background: #dc3545;
-    color: white;
-    padding: 8px 12px;
-    border-radius: 5px;
-    font-size: 14px;
-    display: inline-block;
-    margin: 2px;
+tr:hover {
+    background: #f1f1f1;
 }
 
-td a:hover {
-    background: #c82333;
-}
-
-.edit-btn {
-    background: #ffc107;
-}
-
-.edit-btn:hover {
-    background: #e0a800;
-}
-
-.delete-btn {
-    background: #dc3545;
-}
-
-.delete-btn:hover {
-    background: #c82333;
-}
-
-form {
+/* Top Bar (Search & Add Button) */
+header {
     display: flex;
     align-items: center;
-    gap: 10px;
     background: #f8f9fa;
-    padding: 15px;
+    padding: 15px 20px;
     border-radius: 8px;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     margin-bottom: 20px;
+    gap: 10px; 
+}
+.search-add-container {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end; 
+    gap: 10px;
 }
 
-/* Styling for the search input */
-.search-input {
-    padding: 10px;
-    width: 250px;
+/* Styling for the search bar */
+#search {
+    padding: 10px 12px;
+    font-size: 16px;
     border: 2px solid #ddd;
-    border-radius: 8px;
-    font-size: 16px;
+    border-radius: 5px;
     transition: 0.3s;
+    width: 250px;
 }
 
-.search-input:focus {
-    border-color: #007bff;
-    outline: none;
-    box-shadow: 0 0 8px rgba(0, 123, 255, 0.3);
-}
-
-/* Styling for the search button */
-.search-button {
-    padding: 10px 15px;
-    background: #007bff;
-    color: white;
-    border: none;
-    border-radius: 8px;
-    font-size: 16px;
-    cursor: pointer;
-    transition: 0.3s;
-}
-
-.search-button:hover {
-    background: #0056b3;
-}
-
-/* Styling for the "Add Product" button */
+/* Add Product Button */
 .add-btn {
     text-decoration: none;
     background: #28a745;
@@ -179,10 +127,61 @@ form {
     font-size: 16px;
     font-weight: bold;
     transition: 0.3s;
+    white-space: nowrap;
 }
 
 .add-btn:hover {
     background: #218838;
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
-    transform: translateY(-2px);
+}
+
+/* Responsive Design */
+@media screen and (max-width: 768px) {
+    .search-add-container {
+        width: 100%;
+        justify-content: flex-end;
+        margin-top: 10px;
+    }
+
+    #search {
+        width: 100%;
+    }
+}
+
+/* Delete & Edit Buttons */
+td a {
+    text-decoration: none;
+    padding: 8px 12px;
+    border-radius: 5px;
+    font-size: 14px;
+    display: inline-block;
+    margin: 2px;
+    transition: 0.3s;
+}
+
+.edit-btn {
+    background: #ffc107;
+    color: #333;
+}
+.edit-btn:hover {
+    background: #e0a800;
+}
+
+.delete-btn {
+    background: #dc3545;
+    color: white;
+}
+.delete-btn:hover {
+    background: #c82333;
+}
+
+/* Responsive Design */
+@media screen and (max-width: 768px) {
+    header {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    header input {
+        margin-bottom: 10px;
+    }
 }

@@ -94,6 +94,9 @@ if (!$result) {
             </tbody>
         </table>
     </div>
+
+    <script src="Members/memberScript.js"> </script>
+
 </body>
 </html>
 
