@@ -26,11 +26,14 @@ body {
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 90%;
 }
+
 .inventory-form h2 {
     text-align: center;
     margin-bottom: 15px;
 }
+
 .inventory-form input, 
 .inventory-form textarea {
     width: 100%;
@@ -39,19 +42,56 @@ body {
     border: 1px solid #ccc;
     border-radius: 5px;
     font-size: 16px;
+    transition: border-color 0.3s ease-in-out;
 }
-.inventory-form button {
+
+.inventory-form input:focus,
+.inventory-form textarea:focus {
+    border-color: #1096ea;
+    outline: none;
+    box-shadow: 0 0 5px rgba(16, 150, 234, 0.5);
+}
+
+.submit-button {
     width: 100%;
     padding: 10px;
-    background: #1096ea;
+    background: #28a745;
     border: none;
     color: white;
     font-size: 16px;
     cursor: pointer;
     border-radius: 5px;
+    transition: background 0.3s ease-in-out;
+    margin-bottom: 10px;
 }
-.inventory-form button:hover {
-    background: #9b4d1d;
+
+.submit-button:hover {
+    background: #218838;
+}
+
+.cancel-button {
+    width: 100%;
+    padding: 10px;
+    background: #e74c3c;
+    border: none;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background 0.3s ease-in-out;
+}
+
+/* Cancel Button Hover Effect */
+.cancel-button:hover {
+    background: #c0392b;
+}
+
+/* Responsive Design */
+@media (max-width: 600px) {
+    .inventory-form {
+        width: 100%;
+        padding: 15px;
+    }
 }
 
 /* Inventory Table */
