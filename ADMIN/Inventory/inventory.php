@@ -3,6 +3,7 @@ include 'database.php';
 
 // Initialize $edit_product variable
 $edit_product = null;
+
 // Fetch all inventory products
 $result = mysqli_query($conn, "SELECT * FROM inventory");
 ?>
@@ -20,12 +21,17 @@ $result = mysqli_query($conn, "SELECT * FROM inventory");
         <h1>Inventory Management</h1>
         <p>Manage your products and stock levels</p>
     </div>
+
     <!-- Inventory List -->
     <div class="inventory-content">
         <header>
-            <h2>All Products</h2>
-                <a href="index.php?page=Inventory/editInventory" class="add-btn">Add Product</a>
+        <h2>All Products</h2>
+            <div class="search-add-container">
+                <input type="text" id="search" placeholder="Search Product..." onkeyup="filterProducts()">
+                <a href="index.php?page=Inventory/editInventory" class="add-btn">+ Add Product</a>
+            </div>
         </header>
+
         <table>
             <thead>
                 <tr>
@@ -36,7 +42,7 @@ $result = mysqli_query($conn, "SELECT * FROM inventory");
                     <th>Actions</th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody">
                 <?php while ($row = mysqli_fetch_assoc($result)) : ?>
                 <tr>
                     <td><?php echo htmlspecialchars($row['product_name']); ?></td>
@@ -53,9 +59,9 @@ $result = mysqli_query($conn, "SELECT * FROM inventory");
         </table>
     </div>
 
+    <script src="Inventory/inventoryScript.js"></script>
+    
 </body>
-
-
 </html>
 
 <?php mysqli_close($conn); ?>

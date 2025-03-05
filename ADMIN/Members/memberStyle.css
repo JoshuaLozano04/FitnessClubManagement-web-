@@ -11,17 +11,17 @@ body {
 
 /* General styles for the title section */
 .title {
-    text-align: left;
-    margin-bottom: 5px;
+    margin-top: 20px;
 }
 
 .title h1 {
-    padding-top: 20px; /* Adds padding to the top of the heading */
-    font-size: 1.3rem;
+    font-size: 28px;
+    color: #333;
 }
 
 .title p {
-    font-size: 1rem;
+    color: #777;
+    padding-bottom: 20px;
 }
 
 /* General styles */
@@ -63,8 +63,8 @@ th, td {
 }
 
 th {
-    background-color: #f2f2f2;
-    color: #333;
+    background-color: #007bff;
+    color: white;
     font-weight: bold;
 }
 
@@ -76,7 +76,7 @@ tr:hover {
 .search-form {
     display: flex;
     align-items: center;
-    justify-content: space-between; /* Space between search and filter */
+    justify-content: space-between;
     max-width: 600px;
     margin: 20px auto;
 }
