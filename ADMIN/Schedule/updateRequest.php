@@ -29,10 +29,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['request_id'])) {
         $stmt->bind_param('ssssi', $request_date, $start_time, $end_time, $status, $request_id);
 
         if (!$stmt->execute()) {
+            throw new Exception("Error creating assignment: " . $stmt->error);
+        } else {
+            echo "Assignment created successfully.<br>";
+        }
 
         // Commit the transaction
         $conn->commit();
-        echo "Request updated and assignment created successfully.";
+        echo "Transaction committed successfully.<br>";
 
         // Redirect to the schedule page
         header("Location: ../index.php?page=Schedule/schedule");
@@ -40,7 +44,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['request_id'])) {
     } catch (Exception $e) {
         // Rollback the transaction if any error occurs
         $conn->rollback();
-        echo $e->getMessage();
+        echo "Transaction rolled back: " . $e->getMessage();
     }
 
     $stmt->close();
