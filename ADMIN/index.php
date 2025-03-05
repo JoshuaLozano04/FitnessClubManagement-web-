@@ -1,5 +1,37 @@
 <?php
 session_start();
+include 'database.php'; // Ensure the database connection is included
+
+// Query to check product quantities and insert notifications
+$productQuery = "SELECT * FROM inventory WHERE stock_quantity <= 2";
+$productResult = $conn->query($productQuery);
+
+if ($productResult) {
+    while ($product = $productResult->fetch_assoc()) {
+        $message = "Product " . $product['product_name'] . " is almost out of stock (Quantity: " . $product['stock_quantity'] . ")";
+
+        // Check if the notification already exists
+        $checkQuery = $conn->prepare("SELECT COUNT(*) FROM admin_notifications WHERE message = ?");
+        $checkQuery->bind_param("s", $message);
+        $checkQuery->execute();
+        $checkQuery->bind_result($count);
+        $checkQuery->fetch();
+        $checkQuery->close();
+
+        if ($count == 0) {
+            // Insert the notification if it doesn't already exist
+            $stmt = $conn->prepare("INSERT INTO admin_notifications (message) VALUES (?)");
+            $stmt->bind_param("s", $message);
+            $stmt->execute();
+            $stmt->close();
+        }
+    }
+} else {
+    echo "Error: " . $conn->error;
+}
+
+// Query to get notifications
+$notifications = $conn->query("SELECT * FROM admin_notifications ORDER BY created_at DESC");
 ?>
 
 <!DOCTYPE html>
@@ -55,9 +87,17 @@ session_start();
 
             <!-- Right side of the header -->
             <div class="header-right">
-                <button class="notification-btn">
+                <button class="notification-btn" onclick="toggleNotifications()">
                     <i class="ri-notification-3-line"></i>
                 </button>
+                <div class="notifications-window" id="notificationsWindow">
+                    <h3>Notifications</h3>
+                    <ul>
+                        <?php while ($notification = $notifications->fetch_assoc()): ?>
+                            <li><?php echo $notification['message']; ?> <br><small><?php echo $notification['created_at']; ?></small></li>
+                        <?php endwhile; ?>
+                    </ul>
+                </div>
                 <div class="user-info">
                     <?php if (isset($_SESSION['fullname'])): ?>
                         <div class="dropdown" id="dropdown">
@@ -107,5 +147,11 @@ session_start();
         }
         ?>
     </div>
+    <script>
+        function toggleNotifications() {
+            const notificationsWindow = document.getElementById('notificationsWindow');
+            notificationsWindow.style.display = notificationsWindow.style.display === 'none' ? 'block' : 'none';
+        }
+    </script>
 </body>
 </html>
