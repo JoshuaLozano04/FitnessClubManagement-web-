@@ -20,7 +20,7 @@ session_start();
         <!-- Navigation Links -->
         <li><a href="index.php?page=dashboard" class="<?= ($_GET['page'] ?? 'dashboard') == 'dashboard' ? 'active' : ''; ?>"><i class="ri-dashboard-3-line"></i>Dashboard</a></li>
         <li><a href="index.php?page=Members/members" class="<?= ($_GET['page'] ?? '') == 'Members/members' ? 'active' : ''; ?>"><i class="ri-group-fill"></i>Members</a></li>
-        <li><a href="index.php?page=schedule" class="<?= ($_GET['page'] ?? '') == 'schedule' ? 'active' : ''; ?>"><i class="ri-calendar-2-line"></i>Schedule</a></li>
+        <li><a href="index.php?page=Schedule/schedule" class="<?= ($_GET['page'] ?? '') == 'Schedule/schedule' ? 'active' : ''; ?>"><i class="ri-calendar-2-line"></i>Schedule</a></li>
         <li><a href="index.php?page=Inventory/inventory" class="<?= ($_GET['page'] ?? '') == 'Inventory/inventory' ? 'active' : ''; ?>"><i class="ri-store-fill"></i>Inventory</a></li>
         <li><a href="index.php?page=orders" class="<?= ($_GET['page'] ?? '') == 'orders' ? 'active' : ''; ?>"><i class="ri-shopping-bag-4-fill"></i>Orders</a></li>
         <li><a href="index.php?page=report" class="<?= ($_GET['page'] ?? '') == 'report' ? 'active' : ''; ?>"><i class="ri-bar-chart-2-fill"></i>Report</a></li>
@@ -40,7 +40,8 @@ session_start();
                     $page_titles = [
                         'dashboard' => 'Dashboard',
                         'Members/members' => 'Members',
-                        'schedule' => 'Schedule',
+                        'Schedule/schedule' => 'Schedule',
+                        'Schedule/manageRequest' => 'Manage Request',
                         'attendance' => 'Attendance',
                         'report' => 'Report',
                         'orders' => 'Orders',
@@ -48,7 +49,7 @@ session_start();
                         'Inventory/editInventory' => 'Edit Inventory',
                         'users' => 'User Account'
                     ];
-                    echo "<h2>" . $page_titles[$page] . "</h2>";
+                    echo "<h2>" . ($page_titles[$page] ?? 'Page Not Found') . "</h2>";
                 ?>
             </div>
 
@@ -74,7 +75,7 @@ session_start();
         </header>
 
         <?php
-        $allowed_pages = ['dashboard', 'Members/members', 'Members/editMembers', 'schedule', 'attendance', 'report', 'Inventory/inventory', 'Inventory/editInventory', 'orders', 'users'];
+        $allowed_pages = ['dashboard', 'Members/members', 'Members/editMembers', 'Schedule/schedule', "Schedule/manageRequest",'attendance', 'report', 'Inventory/inventory', 'Inventory/editInventory', 'orders', 'users'];
         $page = $_GET['page'] ?? 'dashboard';
         if (in_array($page, $allowed_pages)) {
             include "$page.php";

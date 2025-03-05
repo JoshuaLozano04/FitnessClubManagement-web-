@@ -15,26 +15,38 @@
             padding: 10px;
             border-radius: 10px;
             margin-top: 35px;
-            max-width: 200px; /* Adjust the size as needed */
+            max-width: 200px;/* Adjust the size as needed */
             text-align: center;
             font-size: 24px;
             font-weight: bold;
+            margin-left: 20px;
         }
         body {
             background-color: #f1f1f1;
+        }
+        #membersChartContainer {
+            display: flex;
+            justify-content: space-around;
+            flex-direction: row;
+            align-items: center;
+            max-width: fit-content;
         }
     </style>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css" rel="stylesheet"/>
 </head>
 <body>
     <p style="margin-top: 20px;">Welcome to the dashboard</p>
-    
-    <canvas id="membersPieChart" width="50" height="50"></canvas>
-    <div id="trainersCounter"></div>
-    
+
+    <div id="membersChartContainer">
+        <canvas id="membersPieChart" width="50" height="50"></canvas>
+        <div id="trainersCounter" class="ri-user-2-fill"></div>
+        
+    </div>
+
     <?php
     include 'database.php'; // Ensure this line has a semicolon
 
