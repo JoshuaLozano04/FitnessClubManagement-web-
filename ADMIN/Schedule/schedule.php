@@ -5,72 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Schedule</title>
     <link rel="stylesheet" href="Schedule/scheduleStyle.css">
-    <style>
-        body {
-            background: #f2f2f2;
-        }
-        .calendar-container, .table-container {
-            background-color: rgb(255, 255, 255);
-            padding: 20px;
-            margin-top: 20px;
-            border-radius: 10px;
-        }
-        .calendar-label, .table-label {
-            font-size: 24px;
-            font-weight: bold;
-            margin-bottom: 10px;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-        th, td {
-            padding: 10px;
-            text-align: left;
-            border: 1px solid black;
-        }
-        th {
-            background-color: #f2f2f2;
-            text-align: center;
-        }
-        .manage-button {
-            background-color: #007bff;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        .manage-button:hover {
-            background-color: #0056b3;
-        }
-        .calendar {
-            display: grid;
-            grid-template-columns: repeat(7, 1fr);
-            gap: 10px;
-        }
-        .calendar-day {
-            border: 1px solid #ddd;
-            padding: 10px;
-            background-color: #f9f9f9;
-            border-radius: 5px;
-        }
-        .calendar-day-header {
-            font-weight: bold;
-            text-align: center;
-        }
-        .assignment {
-            background-color: #007bff;
-            color: white;
-            padding: 5px;
-            border-radius: 3px;
-            margin-top: 5px;
-        }
-    </style>
 </head>
 <body>
     <p>Welcome to the schedule page</p>
-
     <?php
     include 'database.php';
 
@@ -109,7 +46,7 @@
     for ($day = 1; $day <= $daysInMonth; $day++) {
         echo "<div class='calendar-day'>";
         echo "<div class='calendar-day-number'>$day</div>";
-
+        
         // Print assignments for the day
         foreach ($assignments as $assignment) {
             if (date('Y-m-d', strtotime($assignment['assignment_date'])) == "$currentYear-$currentMonth-$day") {

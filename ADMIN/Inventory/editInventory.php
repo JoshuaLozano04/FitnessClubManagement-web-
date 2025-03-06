@@ -12,7 +12,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['add_product'])) {
               VALUES ('$product_name', '$description', '$price', '$stock_quantity')";
 
     if (mysqli_query($conn, $query)) {
-        header("Location: index.php?page=Inventory/inventory");
+        echo "<script>window.location.href = 'index.php?page=Inventory/inventory';</script>";
         exit();
     } else {
         echo "Error adding product: " . mysqli_error($conn);
@@ -44,14 +44,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['update_product'])) {
                 stock_quantity='$stock_quantity' 
                 WHERE id=$id";
     mysqli_query($conn, $query);
-    header("Location: index.php?page=Inventory/inventory");
+    echo "<script>window.location.href = 'index.php?page=Inventory/inventory';</script>";
     exit();
 }
+
 // Handle Delete Product
 if (isset($_GET['delete'])) {
     $id = intval($_GET['delete']);
     mysqli_query($conn, "DELETE FROM inventory WHERE id=$id");
-    header("Location: index.php?page=Inventory/inventory");
+    echo "<script>window.location.href = 'index.php?page=Inventory/inventory';</script>";
     exit();
 }
 ?>
