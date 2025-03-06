@@ -8,6 +8,7 @@
 </head>
 <body>
     <p>Welcome to the schedule page</p>
+
     <?php
     include 'database.php';
 

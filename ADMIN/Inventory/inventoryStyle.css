@@ -32,7 +32,6 @@ body {
     justify-content: flex-end;
 }
 
-
 .inventory-content {
     margin: 25px auto;
 }
@@ -170,7 +169,6 @@ td a:hover {
     background: #c82333;
 }
 
-
 /* Add Product Button */
 .add-btn {
     text-decoration: none;
@@ -205,14 +203,19 @@ td a:hover {
 }
 /* Responsive Design */
 @media screen and (max-width: 768px) {
-    .search-add-container {
+    .search-add-hcontainer {
         width: 100%;
         justify-content: flex-end;
         margin-top: 10px;
     }
 
     #search {
-        width: 100%;
+        padding: 10px;
+        width: 250px;
+        border: 2px solid #ddd;
+        border-radius: 8px;
+        font-size: 16px;
+        transition: 0.3s;
     }
 }
 
@@ -252,4 +255,20 @@ td a {
     header input {
         margin-bottom: 10px;
     }
+}
+
+/* Search Bar Styling */
+#search {
+    padding: 10px;
+    width: 300px;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    font-size: 16px;
+    transition: border-color 0.3s ease-in-out;
+}
+
+#search:focus {
+    border-color: #1096ea;
+    outline: none;
+    box-shadow: 0 0 5px rgba(16, 150, 234, 0.5);
 }
