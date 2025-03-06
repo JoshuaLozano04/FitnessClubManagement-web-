@@ -237,6 +237,21 @@ $notificationCount = $unreadNotifications['unread_count'];
                     }
                 };
                 xhr.send();
+
+                // Add event listener to close notifications window when clicking outside
+                document.addEventListener('click', closeNotificationsOnClickOutside);
+            } else {
+                // Remove event listener when notifications window is closed
+                document.removeEventListener('click', closeNotificationsOnClickOutside);
+            }
+        }
+
+        function closeNotificationsOnClickOutside(event) {
+            const notificationsWindow = document.getElementById('notificationsWindow');
+            const notificationBtn = document.querySelector('.notification-btn');
+            if (!notificationsWindow.contains(event.target) && !notificationBtn.contains(event.target)) {
+                notificationsWindow.style.display = 'none';
+                document.removeEventListener('click', closeNotificationsOnClickOutside);
             }
         }
 
