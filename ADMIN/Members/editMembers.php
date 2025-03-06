@@ -36,7 +36,7 @@ $user = mysqli_fetch_assoc($result);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Edit Member</title>
-    <link rel="stylesheet" href="editMemberStyle.css">
+    <link rel="stylesheet" href="Members/editMemberStyle.css">
 </head>
 <body>
     <div class="edit-member-content">
@@ -58,7 +58,8 @@ $user = mysqli_fetch_assoc($result);
                 <tr>
                     <td><label for="status">Status:</label></td>
                     <td>
-                        <select name="status" required>
+                        <select name="status" id="status" required>
+                            <option value="" disabled selected>Select Status</option>
                             <option value="active" <?php echo $user['status'] == 'active' ? 'selected' : ''; ?>>Active</option>
                             <option value="inactive" <?php echo $user['status'] == 'inactive' ? 'selected' : ''; ?>>Inactive</option>
                         </select>
@@ -67,6 +68,13 @@ $user = mysqli_fetch_assoc($result);
                 <tr>
                     <td colspan="2"><button type="submit">Save Changes</button></td>
                 </tr>
+                <tr>
+                    <td colspan="2"><button type="button" class="cancel-button" onclick="window.location.href='/PumpingIronGym/ADMIN/index.php?page=Members/members&id=<?php echo $user['id']; ?>';">
+                Cancel
+            </button></td>
+                </tr>
+                
+                
             </table>
         </form>
     </div>

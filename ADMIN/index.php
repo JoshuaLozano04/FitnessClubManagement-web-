@@ -136,6 +136,7 @@ $notificationCount = $unreadNotifications['unread_count'];
                     $page_titles = [
                         'dashboard' => 'Dashboard',
                         'Members/members' => 'Members',
+                        'Members/editMembers' => 'Edit Member',
                         'Schedule/schedule' => 'Schedule',
                         'Schedule/manageRequest' => 'Manage Request',
                         'attendance' => 'Attendance',

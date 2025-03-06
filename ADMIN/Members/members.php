@@ -1,3 +1,4 @@
+
 <?php
 include 'database.php';
 
@@ -87,7 +88,7 @@ if (!$result) {
                     echo "<td>" . ($row['membership_end']) . "</td>";
                     echo "<td>" . ($row['role']) . "</td>"; 
                     echo "<td>" . ($row['status']) . "</td>";
-                    echo "<td><a href='Members/editMembers.php?id=" . $row['id'] . "' class='edit-button'>Edit</a></td>";
+                    echo "<td><a href='index.php?page=Members/editMembers&id=" . $row['id'] . "' class='edit-button'>Edit</a></td>";
                     echo "</tr>";
                 }
                 ?>
@@ -103,3 +104,4 @@ if (!$result) {
 <?php
 mysqli_close($conn);
 ?>
+

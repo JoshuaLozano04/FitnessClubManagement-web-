@@ -72,9 +72,9 @@ if (isset($_GET['delete'])) {
             <input type="text" id="product_name" name="product_name" placeholder="Product Name" required
                 value="<?php echo isset($edit_product['product_name']) ? htmlspecialchars($edit_product['product_name']) : ''; ?>">
             <textarea id="description" name="description" placeholder="Description" required maxlength="30"><?php echo isset($edit_product['description']) ? htmlspecialchars($edit_product['description']) : ''; ?></textarea>
-            <input type="number" step="0.01" min="0" id="price" name="price" placeholder="Price" required 
+            <input type="number" step="0.01" min="1" id="price" name="price" placeholder="Price" required 
                 value="<?php echo isset($edit_product['price']) ? floatval($edit_product['price']) : ''; ?>">
-            <input type="number" id="stock_quantity" name="stock_quantity" placeholder="Stock Quantity" required min="0"
+            <input type="number" min="1" id="stock_quantity" name="stock_quantity" placeholder="Stock Quantity" required min="0"
                 value="<?php echo isset($edit_product['stock_quantity']) ? intval($edit_product['stock_quantity']) : ''; ?>">
             <button type="submit" class="submit-button" id="submit_button" name="<?php echo isset($edit_product) ? "update_product" : "add_product"; ?>">
                 <?php echo isset($edit_product) ? "Update Product" : "Add Product"; ?>

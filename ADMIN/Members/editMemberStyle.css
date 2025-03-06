@@ -2,30 +2,89 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
+    height: 70vh;
+    font-family: 'Poppins', sans-serif;
 }
+
 .edit-member-form {
     width: 50%;
-    background-color: #f9f9f9;
-    padding: 20px;
+    background: #ffffff;
+    padding: 30px;
     border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    animation: fadeIn 0.5s ease-in-out;
 }
+
 .edit-member-form table {
     width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
 }
+
 .edit-member-form td {
-    padding: 10px;
+    padding: 12px;
+    padding-bottom: 0;
+    font-size: 16px;
+    color: #333;
+    text-align: left;
 }
-.edit-member-form button {
+
+.edit-member-form input,
+.edit-member-form select {
     width: 100%;
     padding: 10px;
-    background-color: #1096ea;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+    transition: all 0.3s ease;
+    margin-bottom: 1px;
+}
+
+.edit-member-form input:focus,
+.edit-member-form select:focus {
+    border-color: #1096ea;
+    outline: none;
+    box-shadow: 0 0 8px rgba(16, 150, 234, 0.3);
+}
+
+.edit-member-form button {
+    width: 100%;
+    padding: 12px;
+    background: #1096ea;
     color: white;
     border: none;
-    border-radius: 5px;
+    border-radius: 6px;
     cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    transition: all 0.3s ease;
 }
+
+.edit-member-form .cancel-button {
+    width: 100%;
+    padding: 12px;
+    background: #e74c3c;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    transition: all 0.3s ease;
+}
+
 .edit-member-form button:hover {
-    background-color: #1d6b9b;
+    background: #0a7bc2;
+}
+
+.edit-member-form .cancel-button:hover {
+    background: #c0392b;
+}
+
+@media (max-width: 768px) {
+    .edit-member-form {
+        width: 80%;
+        padding: 20px;
+    }
 }
