@@ -32,6 +32,12 @@ if ($productResult) {
 
 // Query to get notifications
 $notifications = $conn->query("SELECT * FROM admin_notifications ORDER BY created_at DESC");
+
+// Query to count unread notifications
+$unreadNotificationsQuery = "SELECT COUNT(*) AS unread_count FROM admin_notifications WHERE read_status = 0";
+$unreadNotificationsResult = $conn->query($unreadNotificationsQuery);
+$unreadNotifications = $unreadNotificationsResult->fetch_assoc();
+$notificationCount = $unreadNotifications['unread_count'];
 ?>
 
 <!DOCTYPE html>
@@ -42,6 +48,21 @@ $notifications = $conn->query("SELECT * FROM admin_notifications ORDER BY create
     <title>Dashboard</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css" rel="stylesheet"/>
+    <style>
+        .notification-btn {
+            position: relative;
+        }
+        .notification-count {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: red;
+            color: white;
+            border-radius: 50%;
+            padding: 2px 6px;
+            font-size: 12px;
+        }
+    </style>
 </head>
 <body>
     <!-- Sidebar Navigation -->
@@ -89,6 +110,9 @@ $notifications = $conn->query("SELECT * FROM admin_notifications ORDER BY create
             <div class="header-right">
                 <button class="notification-btn" onclick="toggleNotifications()">
                     <i class="ri-notification-3-line"></i>
+                    <?php if ($notificationCount > 0): ?>
+                        <span class="notification-count"><?php echo $notificationCount; ?></span>
+                    <?php endif; ?>
                 </button>
                 <div class="notifications-window" id="notificationsWindow">
                     <h3>Notifications</h3>
@@ -151,6 +175,22 @@ $notifications = $conn->query("SELECT * FROM admin_notifications ORDER BY create
         function toggleNotifications() {
             const notificationsWindow = document.getElementById('notificationsWindow');
             notificationsWindow.style.display = notificationsWindow.style.display === 'none' ? 'block' : 'none';
+
+            if (notificationsWindow.style.display === 'block') {
+                // Send an AJAX request to mark notifications as read
+                const xhr = new XMLHttpRequest();
+                xhr.open('GET', 'mark_notifications_read.php', true);
+                xhr.onload = function() {
+                    if (xhr.status === 200 && xhr.responseText === 'success') {
+                        // Hide the notification count
+                        const notificationCount = document.querySelector('.notification-count');
+                        if (notificationCount) {
+                            notificationCount.style.display = 'none';
+                        }
+                    }
+                };
+                xhr.send();
+            }
         }
     </script>
 </body>
