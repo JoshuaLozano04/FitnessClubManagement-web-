@@ -62,6 +62,49 @@ $notificationCount = $unreadNotifications['unread_count'];
             padding: 2px 6px;
             font-size: 12px;
         }
+        .notifications-window {
+            display: none;
+            position: absolute;
+            right: 20px;
+            top: 90px; /* Position below the button */
+            background: white;
+            border: 1px solid #ddd;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 300px;
+            max-height: 400px;
+            overflow-y: auto;
+            z-index: 1000;
+        }
+        .notifications-window h3 {
+            margin: 0;
+            padding: 10px;
+            background: #f4f4f4;
+            border-bottom: 1px solid #ddd;
+        }
+        .notifications-window ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+        .notifications-window li {
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+            position: relative;
+        }
+        .notifications-window li small {
+            display: block;
+            color: #777;
+        }
+        .notifications-window li .delete-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: none;
+            border: none;
+            color: red;
+            font-size: 16px;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
@@ -118,7 +161,11 @@ $notificationCount = $unreadNotifications['unread_count'];
                     <h3>Notifications</h3>
                     <ul>
                         <?php while ($notification = $notifications->fetch_assoc()): ?>
-                            <li><?php echo $notification['message']; ?> <br><small><?php echo $notification['created_at']; ?></small></li>
+                            <li>
+                                <?php echo $notification['message']; ?> 
+                                <br><small><?php echo $notification['created_at']; ?></small>
+                                <button class="delete-btn" onclick="deleteNotification(<?php echo $notification['id']; ?>)">×</button>
+                            </li>
                         <?php endwhile; ?>
                     </ul>
                 </div>
@@ -191,6 +238,21 @@ $notificationCount = $unreadNotifications['unread_count'];
                 };
                 xhr.send();
             }
+        }
+
+        function deleteNotification(notificationId) {
+            // Send an AJAX request to delete the notification
+            const xhr = new XMLHttpRequest();
+            xhr.open('POST', 'delete_notification.php', true);
+            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+            xhr.onload = function() {
+                if (xhr.status === 200 && xhr.responseText === 'success') {
+                    // Remove the notification from the list
+                    const notificationElement = document.querySelector(`button[onclick="deleteNotification(${notificationId})"]`).parentElement;
+                    notificationElement.remove();
+                }
+            };
+            xhr.send(`id=${notificationId}`);
         }
     </script>
 </body>
