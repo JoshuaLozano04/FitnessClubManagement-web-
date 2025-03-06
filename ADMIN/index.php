@@ -3,7 +3,7 @@ session_start();
 include 'database.php'; // Ensure the database connection is included
 
 // Query to check product quantities and insert notifications
-$productQuery = "SELECT * FROM inventory WHERE stock_quantity <= 2";
+$productQuery = "SELECT * FROM inventory WHERE stock_quantity <= 5";
 $productResult = $conn->query($productQuery);
 
 if ($productResult) {
