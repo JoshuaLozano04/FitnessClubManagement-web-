@@ -1,5 +1,4 @@
 <?php
-session_start();
 include 'database.php'; // Ensure the database connection is included
 
 // Query to get the counts of inactive, active, and returning members with the role "member"
