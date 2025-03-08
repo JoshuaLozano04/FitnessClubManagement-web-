@@ -12,7 +12,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $stmt->bind_param("ssssi", $fullname, $membership_start, $membership_end, $status, $id);
 
     if ($stmt->execute()) {
-        header("Location: /PumpingIronGym/ADMIN/index.php?page=Members/members");
+        echo "<script>window.location.href = 'index.php?page=Members/members';</script>";
     } else {
         echo "Error: " . $stmt->error;
     }
