@@ -1,3 +1,38 @@
+<?php
+include 'database.php'; // Ensure the database connection is included
+
+// Query to get the counts of inactive, active, and returning members with the role "member"
+$inactiveMembersQuery = "SELECT COUNT(*) as count FROM users WHERE status = 'inactive' AND role = 'member'";
+$activeMembersQuery = "SELECT COUNT(*) as count FROM users WHERE status = 'active' AND role = 'member'";
+$returningMembersQuery = "SELECT COUNT(*) as count FROM users WHERE status = 'returning' AND role = 'member'";
+
+$inactiveMembersResult = $conn->query($inactiveMembersQuery);
+$activeMembersResult = $conn->query($activeMembersQuery);
+$returningMembersResult = $conn->query($returningMembersQuery);
+
+if ($inactiveMembersResult && $activeMembersResult && $returningMembersResult) {
+    $inactiveMembersCount = $inactiveMembersResult->fetch_assoc()['count'];
+    $activeMembersCount = $activeMembersResult->fetch_assoc()['count'];
+    $returningMembersCount = $returningMembersResult->fetch_assoc()['count'];
+} else {
+    $inactiveMembersCount = 0;
+    $activeMembersCount = 0;
+    $returningMembersCount = 0;
+}
+
+// Query to get the count of trainers
+$trainersQuery = "SELECT COUNT(*) as count FROM users WHERE role = 'trainer'";
+$trainersResult = $conn->query($trainersQuery);
+
+if ($trainersResult) {
+    $trainersCount = $trainersResult->fetch_assoc()['count'];
+} else {
+    $trainersCount = 0;
+}
+
+$conn->close();
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -46,41 +81,6 @@
         <div id="trainersCounter" class="ri-user-2-fill"></div>
         
     </div>
-
-    <?php
-    include 'database.php'; // Ensure this line has a semicolon
-
-    // Query to get the counts of inactive and active members
-    $inactiveMembersQuery = "SELECT COUNT(*) as count FROM users WHERE status = 'inactive'";
-    $activeMembersQuery = "SELECT COUNT(*) as count FROM users WHERE status = 'active'";
-    $returningMembersQuery = "SELECT COUNT(*) as count FROM users WHERE status = 'returning'";
-
-    $inactiveMembersResult = $conn->query($inactiveMembersQuery);
-    $activeMembersResult = $conn->query($activeMembersQuery);
-    $returningMembersResult = $conn->query($returningMembersQuery);
-
-    if ($inactiveMembersResult && $activeMembersResult && $returningMembersResult) {
-        $inactiveMembersCount = $inactiveMembersResult->fetch_assoc()['count'];
-        $activeMembersCount = $activeMembersResult->fetch_assoc()['count'];
-        $returningMembersCount = $returningMembersResult->fetch_assoc()['count'];
-    } else {
-        $inactiveMembersCount = 0;
-        $activeMembersCount = 0;
-        $returningMembersCount = 0;
-    }
-
-    // Query to get the count of trainers
-    $trainersQuery = "SELECT COUNT(*) as count FROM users WHERE role = 'trainer'";
-    $trainersResult = $conn->query($trainersQuery);
-
-    if ($trainersResult) {
-        $trainersCount = $trainersResult->fetch_assoc()['count'];
-    } else {
-        $trainersCount = 0;
-    }
-
-    $conn->close();
-    ?>
 
     <script>
         // Data from PHP
