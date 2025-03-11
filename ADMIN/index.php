@@ -105,6 +105,8 @@ $notificationCount = $unreadNotifications['unread_count'];
             font-size: 16px;
             cursor: pointer;
         }
+
+        
     </style>
 </head>
 <body>
@@ -188,7 +190,7 @@ $notificationCount = $unreadNotifications['unread_count'];
                                         <i class="ri-user-line"></i>
                                         <span>Profile</span>
                                     </a>
-                                    <a href ="#" class="dropdown_link">
+                                    <a href="#" class="dropdown_link" id="changePasswordLink">
                                         <i class="ri-lock-2-line"></i>
                                         <span>Change Password</span>
                                     </a>
@@ -207,7 +209,35 @@ $notificationCount = $unreadNotifications['unread_count'];
                 </div>
             </div>
         </header>
-                        
+
+        <!-- Change Password Modal -->
+        <div id="changePasswordModal" class="modal">
+            <div class="change-password-content">
+                <span class="change-password-close-btn" id="closeChangePassword">&times;</span>
+                <h2>Change Password</h2>
+                <form id="changePasswordForm" method="POST" action="change_password.php">
+                    <label for="currentPassword">Current Password:</label>
+                    <div class="change-password-wrapper">
+                        <input type="password" id="currentPassword" name="currentPassword" class="change-password-input" required placeholder="Enter current password">
+                        <i class="ri-eye-off-line change-password-toggle" data-target="currentPassword"></i>
+                    </div>
+
+                    <label for="newPassword">New Password:</label>
+                    <div class="change-password-wrapper">
+                        <input type="password" id="newPassword" name="newPassword" class="change-password-input" required placeholder="Enter new password">
+                        <i class="ri-eye-off-line change-password-toggle" data-target="newPassword"></i>
+                    </div>
+
+                    <label for="confirmPassword">Confirm New Password:</label>
+                    <div class="change-password-wrapper">
+                        <input type="password" id="confirmPassword" name="confirmPassword" class="change-password-input" required placeholder="Confirm new password">
+                        <i class="ri-eye-off-line change-password-toggle" data-target="confirmPassword"></i>
+                    </div>
+
+                    <button type="submit" class="change-password-btn">Update Password</button>
+                </form>
+            </div>
+        </div>
 
         <?php
         $allowed_pages = ['dashboard', 'Members/members', 'Members/editMembers', 'Schedule/schedule', "Schedule/manageRequest",'attendance', 'report', 'Inventory/inventory', 'Inventory/editInventory', 'orders', 'users'];

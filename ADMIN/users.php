@@ -33,8 +33,6 @@
                         <p><b>Name:</b> <?php echo $user['fullname']; ?></p>
                         <p><b>Email:</b> <?php echo $user['email']; ?></p>
                         <p><b>Role:</b> <?php echo $user['role']; ?></p>
-                        <p><b>Status:</b>
-                        <p><b>Access:</b>
                     </div>
                     <div class="admin-actions">
                         <a href="#?id=<?php echo $user['id']; ?>" class="edit-btn">Edit</a>
@@ -57,8 +55,17 @@
                     <input type="email" id="email" name="email" required placeholder="Enter a valid email address">
 
                     <label for="password">Password:</label>
-                    <input type="password" id="password" name="password" required placeholder="Enter a password">
+                    <div class="password-wrapper">
+                        <input type="password" id="password" name="password" required placeholder="Enter a password">
+                        <i class="ri-eye-off-line toggle-password" data-target="password"></i>
+                    </div>
 
+                    <label for="confirmPassword">Confirm Password:</label>
+                    <div class="password-wrapper">
+                        <input type="password" id="confirmPassword" name="confirmPassword" required placeholder="Confirm your password">
+                        <i class="ri-eye-off-line toggle-password" data-target="confirmPassword"></i>
+                    </div>
+                    
                     <label for="role">Role:</label>
                     <select id="role" name="role" required>
                         <option value="" disabled selected>Select Role</option>
@@ -66,7 +73,7 @@
                         <option value="Staff">Staff</option>
                     </select>
 
-                    <button type="button" class="btn" onclick="submitAdmin()">Add Admin</button>
+                    <button type="button" class="btn" onclick="submitAdmin()">Add User</button>
                 </form>
             </div>
         </div>

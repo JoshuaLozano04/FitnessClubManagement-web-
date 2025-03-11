@@ -20,36 +20,60 @@ document.addEventListener("DOMContentLoaded", function () {
     let openModalBtn = document.getElementById("openModalBtn");
     let closeModalBtn = document.querySelector(".close-btn");
 
-    openModalBtn.addEventListener("click", function () {
-        modal.style.display = "flex";
-        document.body.classList.add("modal-active");
-    });
+    if (openModalBtn) {
+        openModalBtn.addEventListener("click", function () {
+            modal.style.display = "flex";
+            document.body.classList.add("modal-active");
+        });
+    }
 
-    closeModalBtn.addEventListener("click", function () {
-        modal.style.display = "none";
-        document.body.classList.remove("modal-active");
-    });
+    if (closeModalBtn) {
+        closeModalBtn.addEventListener("click", function () {
+            modal.style.display = "none";
+            document.body.classList.remove("modal-active");
+            resetForm();
+        });
+    }
 
     modal.style.display = "none";
+
+    // Function to show the modal
+    window.openModal = function () {
+        modal.style.display = "flex";
+        document.body.classList.add("modal-active");
+    };
+
+    // Function to hide the modal
+    window.closeModal = function () {
+        modal.style.display = "none";
+        document.body.classList.remove("modal-active");
+        resetForm(); 
+    };
+    
+    // Function to reset the form
+    function resetForm() {
+        let form = document.getElementById("addAdminForm");
+        if (form) {
+            form.reset();
+        }
+    }
+    // Attach event listeners
+    if (openModalBtn) openModalBtn.addEventListener("click", openModal);
+    if (closeModalBtn) closeModalBtn.addEventListener("click", closeModal); 
+
+    // Toggle Password Visibility
+    document.querySelectorAll(".toggle-password").forEach(icon => {
+        icon.addEventListener("click", function () {
+            let targetId = this.getAttribute("data-target");
+            let passwordField = document.getElementById(targetId);
+                
+            if (passwordField.type === "password") {
+                passwordField.type = "text";
+                this.classList.replace("ri-eye-off-line", "ri-eye-line");
+            } else {
+                passwordField.type = "password";
+                this.classList.replace("ri-eye-line", "ri-eye-off-line");
+            }
+        });
+    });
 });
-
-// Function to show the modal
-function openModal() {
-    document.getElementById("addAdminModal").style.display = "flex";
-    document.body.classList.add("modal-active");
-}
-
-// Function to hide the modal
-function closeModal() {
-    document.getElementById("addAdminModal").style.display = "none";
-    document.body.classList.remove("modal-active"); 
-}
-
-// Hide modal when the page loads
-window.onload = function() {
-    document.getElementById("addAdminModal").style.display = "none";
-};
-
-// Attach event listeners to the buttons
-document.getElementById("openModalBtn").addEventListener("click", openModal);
-document.querySelector(".close-btn").addEventListener("click", closeModal);
