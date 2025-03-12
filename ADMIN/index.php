@@ -30,6 +30,34 @@ if ($productResult) {
     echo "Error: " . $conn->error;
 }
 
+// Query to check for new trainer requests and insert notifications
+$requestQuery = "SELECT * FROM trainer_request WHERE status = 'pending'";
+$requestResult = $conn->query($requestQuery);
+
+if ($requestResult) {
+    while ($request = $requestResult->fetch_assoc()) {
+        $message = "New trainer request from " . $request['user_name'] . " for " . date('F j, Y', strtotime($request['date_of_training'])) . " at " . $request['time_start'];
+
+        // Check if the notification already exists
+        $checkQuery = $conn->prepare("SELECT COUNT(*) FROM admin_notifications WHERE message = ?");
+        $checkQuery->bind_param("s", $message);
+        $checkQuery->execute();
+        $checkQuery->bind_result($count);
+        $checkQuery->fetch();
+        $checkQuery->close();
+
+        if ($count == 0) {
+            // Insert the notification if it doesn't already exist
+            $stmt = $conn->prepare("INSERT INTO admin_notifications (message) VALUES (?)");
+            $stmt->bind_param("s", $message);
+            $stmt->execute();
+            $stmt->close();
+        }
+    }
+} else {
+    echo "Error: " . $conn->error;
+}
+
 // Query to get notifications
 $notifications = $conn->query("SELECT * FROM admin_notifications ORDER BY created_at DESC");
 

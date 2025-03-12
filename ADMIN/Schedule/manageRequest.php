@@ -12,6 +12,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET' && isset($_GET['request_id'])) {
         echo "Request not found.";
         exit();
     }
+
+    // Fetch trainers from users table
+    $trainersQuery = "SELECT fullname FROM users WHERE role = 'trainer'";
+    $trainersResult = $conn->query($trainersQuery);
+    $trainers = [];
+    if ($trainersResult->num_rows > 0) {
+        while ($row = $trainersResult->fetch_assoc()) {
+            $trainers[] = $row['fullname'];
+        }
+    }
 } else {
     echo "Invalid request.";
     exit();
@@ -29,7 +39,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET' && isset($_GET['request_id'])) {
 <body>
     <div class="form-container">
         <h2>Manage Trainer Request</h2>
-        <form method="POST" action="updateRequest.php">
+        <form method="POST" action="updateRequest.php" onsubmit="return validateForm()">
             <input type="hidden" name="request_id" value="<?php echo $request['request_id']; ?>">
             <table>
                 <tr>
@@ -41,13 +51,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET' && isset($_GET['request_id'])) {
                     <td colspan="2"><input type="text" id="trainer_name" name="trainer_name" value="<?php echo $request['trainer_name']; ?>" readonly required></td>
                 </tr>
                 <tr>
-                    <td colspan="2"><label for="request_date">Date:</label></td>
-                    <td colspan="2"><label for="start_time">Time:</label></td>
+                    <td colspan="2"><label for="date_of_training">Date of Training:</label></td>
+                    <td colspan="2"><label for="time_start">Start Time:</label></td>
+                    <td colspan="2"><label for="time_end">End Time:</label></td>
                 </tr>
                 <tr>
-                    <td colspan="2"><input type="date" id="request_date" name="request_date" required></td>
-                    <td colspan="2"><input type="time" id="start_time" name="start_time" required></td>
-                    <td colspan="2"><input type="time" id="end_time" name="end_time" required></td>
+                    <td colspan="2"><input type="date" id="date_of_training" name="date_of_training" value="<?php echo $request['date_of_training']; ?>" required></td>
+                    <td colspan="2"><input type="time" id="time_start" name="time_start" value="<?php echo $request['time_start']; ?>" required></td>
+                    <td colspan="2"><input type="time" id="time_end" name="time_end" value="<?php echo $request['time_end']; ?>" required></td>
                 </tr>
                 <tr>
                     <td colspan="2"><label for="status">Status:</label></td>
@@ -55,7 +66,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET' && isset($_GET['request_id'])) {
                 <tr>
                     <td colspan="2">
                         <select id="status" name="status" required>
-                            <option value="pending" <?php echo $request['status'] == 'pending' ? 'selected' : ''; ?>>Pending</option>
                             <option value="approved" <?php echo $request['status'] == 'approved' ? 'selected' : ''; ?>>Approved</option>
                             <option value="rejected" <?php echo $request['status'] == 'rejected' ? 'selected' : ''; ?>>Rejected</option>
                         </select>
@@ -69,5 +79,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET' && isset($_GET['request_id'])) {
             </table>
         </form>
     </div>
+    <script>
+        function validateForm() {
+            var status = document.getElementById('status').value;
+            if (status === 'pending') {
+                alert('Please change the status from pending before updating.');
+                return false;
+            }
+            return true;
+        }
+    </script>
 </body>
 </html>

@@ -16,7 +16,34 @@
     $result = $conn->query("SELECT * FROM trainer_assignments");
     if ($result->num_rows > 0) {
         while ($row = $result->fetch_assoc()) {
-            $assignments[] = $row;
+            $endDateTime = strtotime($row['assignment_date'] . ' ' . $row['end_time']);
+            $currentDateTime = time();
+            if ($endDateTime < $currentDateTime) {
+                // Delete the assignment if the end time has passed
+                $deleteQuery = $conn->prepare("DELETE FROM trainer_assignments WHERE id = ?");
+                $deleteQuery->bind_param('i', $row['id']);
+                $deleteQuery->execute();
+                $deleteQuery->close();
+            } elseif ($row['status'] !== 'rejected') {
+                // Only add assignments that are not rejected
+                $assignments[] = $row;
+            }
+        }
+    }
+
+    // Fetch all trainer requests
+    $result = $conn->query("SELECT * FROM trainer_request");
+    if ($result->num_rows > 0) {
+        while ($row = $result->fetch_assoc()) {
+            $endDateTime = strtotime($row['date_of_training'] . ' ' . $row['time_end']);
+            $currentDateTime = time();
+            if ($endDateTime < $currentDateTime) {
+                // Delete the request if the end time has passed
+                $deleteQuery = $conn->prepare("DELETE FROM trainer_request WHERE request_id = ?");
+                $deleteQuery->bind_param('i', $row['request_id']);
+                $deleteQuery->execute();
+                $deleteQuery->close();
+            }
         }
     }
 
@@ -62,23 +89,28 @@
     echo "</div>";
     echo "</div>";
 
-    // Fetch all trainer requests
+    // Fetch all trainer requests again to display them
     $result = $conn->query("SELECT * FROM trainer_request");
 
     if ($result->num_rows > 0) {
         echo "<div class='table-container'>";
         echo "<div class='table-label'>Trainer Requests</div>";
         echo "<table>";
-        echo "<tr class='table-header'><td><strong>Trainee Name</strong></td><td><Strong>Trainer Name</Strong></td><td><Strong>Request Date</Strong></td><td><Strong>Status</Strong></td><td><Strong>Actions</Strong></td></tr>";
+        echo "<tr class='table-header'><td><strong>Trainee Name</strong></td><td><strong>Trainer Name</strong></td><td><Strong>Date of Training</Strong></td><td><Strong>Time Start</Strong></td><td><Strong>Time End</Strong></td><td><Strong>Description</Strong></td><td><Strong>Request Date</Strong></td><td><Strong>Status</Strong></td><td><Strong>Actions</Strong></td></tr>";
 
         while ($row = $result->fetch_assoc()) {
             echo "<tr>";
             echo "<td>" . $row['user_name'] . "</td>";
             echo "<td>" . $row['trainer_name'] . "</td>";
-            echo "<td>" . $row['request_date'] . "</td>";
+            echo "<td>" . date('F j, Y', strtotime($row['date_of_training'])) . "</td>";
+            echo "<td>" . $row['time_start'] . "</td>";
+            echo "<td>" . $row['time_end'] . "</td>";
+            echo "<td>" . $row['description'] . "</td>";
+            echo "<td>" . date('F j, Y', strtotime($row['request_date'])) . "</td>";
             echo "<td>" . $row['status'] . "</td>";
+            $buttonText = $row['status'] == 'approved' ? 'Edit' : 'Manage';
             echo "<td>
-                    <a href='Schedule/manageRequest.php?request_id=" . $row['request_id'] . "'><button type='button' class='manage-button'>Manage</button></a>
+                    <a href='Schedule/manageRequest.php?request_id=" . $row['request_id'] . "'><button type='button' class='manage-button'>$buttonText</button></a>
                   </td>";
             echo "</tr>";
         }
@@ -89,7 +121,7 @@
         echo "<p>No trainer requests found.</p>";
     }
 
-    // Fetch all trainer assignments
+    // Fetch all trainer assignments again to display them
     $result = $conn->query("SELECT * FROM trainer_assignments");
 
     if ($result->num_rows > 0) {
@@ -102,7 +134,7 @@
             echo "<tr>";
             echo "<td>" . $row['user_name'] . "</td>";
             echo "<td>" . $row['trainer_name'] . "</td>";
-            echo "<td>" . $row['assignment_date'] . "</td>";
+            echo "<td>" . date('F j, Y', strtotime($row['assignment_date'])) . "</td>";
             echo "<td>" . $row['start_time'] . "</td>";
             echo "<td>" . $row['end_time'] . "</td>";
             echo "<td>" . $row['status'] . "</td>";
