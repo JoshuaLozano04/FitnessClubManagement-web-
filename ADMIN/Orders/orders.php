@@ -53,7 +53,7 @@ $result = $conn->query($sql);
                 <tr>
                     <td><?php echo $row['customer_name']; ?></td>
                     <td><?php echo $row['order_date']; ?></td>
-                    <td><img src="<?php echo $row['image']; ?>" width="50"> <?php echo $row['product_name']; ?></td>
+                    <td><?php echo $row['product_name']; ?></td>
                     <td>₱<?php echo number_format($row['price'], 2); ?></td>
                     <td><?php echo $row['quantity']; ?></td>
                     <td class="status <?php echo strtolower(str_replace(' ', '-', $row['status'])); ?>"><?php echo $row['status']; ?></td>
