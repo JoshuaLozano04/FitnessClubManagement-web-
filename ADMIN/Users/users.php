@@ -11,7 +11,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <link rel="stylesheet" href="userStyle.css">
+    <link rel="stylesheet" href="Users/userStyle.css">
 </head>
 <body>
     <div class="main-content">
@@ -79,7 +79,7 @@
         </div>
     </div>
 
-    <script src="userScript.js"></script>
+    <script src="Users/userScript.js"></script>
 
 </body>
 </html>
