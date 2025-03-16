@@ -148,10 +148,10 @@ $notificationCount = $unreadNotifications['unread_count'];
         <li><a href="index.php?page=Members/members" class="<?= ($_GET['page'] ?? '') == 'Members/members' ? 'active' : ''; ?>"><i class="ri-group-fill"></i>Members</a></li>
         <li><a href="index.php?page=Schedule/schedule" class="<?= ($_GET['page'] ?? '') == 'Schedule/schedule' ? 'active' : ''; ?>"><i class="ri-calendar-2-line"></i>Schedule</a></li>
         <li><a href="index.php?page=Inventory/inventory" class="<?= ($_GET['page'] ?? '') == 'Inventory/inventory' ? 'active' : ''; ?>"><i class="ri-store-fill"></i>Inventory</a></li>
-        <li><a href="index.php?page=orders" class="<?= ($_GET['page'] ?? '') == 'orders' ? 'active' : ''; ?>"><i class="ri-shopping-bag-4-fill"></i>Orders</a></li>
+        <li><a href="index.php?page=Orders/orders" class="<?= ($_GET['page'] ?? '') == 'Orders/orders' ? 'active' : ''; ?>"><i class="ri-shopping-bag-4-fill"></i>Orders</a></li>
         <li><a href="index.php?page=report" class="<?= ($_GET['page'] ?? '') == 'report' ? 'active' : ''; ?>"><i class="ri-bar-chart-2-fill"></i>Report</a></li>
         <li><a href="index.php?page=attendance" class="<?= ($_GET['page'] ?? '') == 'attendance' ? 'active' : ''; ?>"><i class="ri-check-line"></i>Attendance</a></li>
-        <li><a href="index.php?page=users" class="<?= ($_GET['page'] ?? '') == 'users' ? 'active' : ''; ?>"><i class="ri-group-fill"></i>User Account</a></li>
+        <li><a href="index.php?page=Users/users" class="<?= ($_GET['page'] ?? '') == 'Users/users' ? 'active' : ''; ?>"><i class="ri-group-fill"></i>User Account</a></li>
     </ul>
 
     <!-- Main Content -->
@@ -171,10 +171,10 @@ $notificationCount = $unreadNotifications['unread_count'];
                         'Schedule/manageRequest' => 'Manage Request',
                         'attendance' => 'Attendance',
                         'report' => 'Report',
-                        'orders' => 'Orders',
+                        'Orders/orders' => 'Orders',
                         'Inventory/inventory' => 'Inventory',
                         'Inventory/editInventory' => 'Edit Inventory',
-                        'users' => 'User Account'
+                        'Users/users' => 'User Account'
                     ];
                     echo "<h2>" . ($page_titles[$page] ?? 'Page Not Found') . "</h2>";
                 ?>
@@ -268,7 +268,7 @@ $notificationCount = $unreadNotifications['unread_count'];
         </div>
 
         <?php
-        $allowed_pages = ['dashboard', 'Members/members', 'Members/editMembers', 'Schedule/schedule', "Schedule/manageRequest",'attendance', 'report', 'Inventory/inventory', 'Inventory/editInventory', 'orders', 'users'];
+        $allowed_pages = ['dashboard', 'Members/members', 'Members/editMembers', 'Schedule/schedule', "Schedule/manageRequest",'attendance', 'report', 'Inventory/inventory', 'Inventory/editInventory', 'Orders/orders', 'Users/users'];
         $page = $_GET['page'] ?? 'dashboard';
         if (in_array($page, $allowed_pages)) {
             include "$page.php";
