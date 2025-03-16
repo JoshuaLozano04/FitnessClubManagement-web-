@@ -18,23 +18,25 @@ body {
     color: #777;
 }
 
-.title-left {
-    flex: 1; /* Makes the left section take up remaining space */
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-    padding-left: 5px;
-}
-
-.title-right {
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-}
-
 .inventory-content {
-    margin: 25px auto;
+    padding: 20px;
+    margin-top: 15px;
+    flex: 1;
+    background-color: #ffffff;
 }
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    width: 100%;
+    margin: auto;
+    background: white;
+    padding: 15px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
 /* Inventory Form */
 .inventory-form {
     background: rgb(255, 255, 255);
@@ -201,9 +203,10 @@ td a:hover {
     outline: none;
     box-shadow: 0 0 8px rgba(122, 129, 143, 0.3);
 }
+
 /* Responsive Design */
 @media screen and (max-width: 768px) {
-    .search-add-hcontainer {
+    .search-add-container {
         width: 100%;
         justify-content: flex-end;
         margin-top: 10px;
@@ -255,20 +258,4 @@ td a {
     header input {
         margin-bottom: 10px;
     }
-}
-
-/* Search Bar Styling */
-#search {
-    padding: 10px;
-    width: 300px;
-    border: 2px solid #ddd;
-    border-radius: 8px;
-    font-size: 16px;
-    transition: border-color 0.3s ease-in-out;
-}
-
-#search:focus {
-    border-color: #1096ea;
-    outline: none;
-    box-shadow: 0 0 5px rgba(16, 150, 234, 0.5);
 }
