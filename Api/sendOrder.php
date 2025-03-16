@@ -71,7 +71,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // Prepare the SQL statement to insert the order
     $stmt = $conn->prepare("INSERT INTO purchase_orders (customer_name, product_name, price, quantity, status, order_date) VALUES (?, ?, ?, ?, 'pending', ?)");
-    $stmt->bind_param("ssdiss", $user_name, $product_name, $total_price, $quantity, $order_date);
+    $stmt->bind_param("ssdis", $user_name, $product_name, $total_price, $quantity, $order_date);
 
     // Execute the statement
     if ($stmt->execute()) {
