@@ -27,7 +27,11 @@
             <?php while ($user = $users->fetch_assoc()): ?>
                 <div class="admin-info">
                     <div class="admin-img">
-                        <img src="default-avatar.png" alt="Admin Profile">
+                        <?php if (!empty($user['profile_picture'])): ?>
+                            <img src="PumpingIronGym/Api/profiles/<?php echo $user['profile_picture']; ?>" alt="Admin Profile">
+                        <?php else: ?>
+                            <img src="default-avatar.png" alt="Admin Profile">
+                        <?php endif; ?>
                     </div>
                     <div class="admin-details">
                         <p><b>Name:</b> <?php echo $user['fullname']; ?></p>
