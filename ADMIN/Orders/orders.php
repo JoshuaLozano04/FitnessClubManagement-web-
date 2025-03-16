@@ -33,7 +33,7 @@ $result = $conn->query($sql);
                 <div class="search-bar">
                     <input type="text" placeholder="Search Product...">
                 </div>
-                <button class="add-button" onclick="openModal()">+ Add Product</button>
+                <button class="add-button" onclick="openModal()">+ Add Purchase Order</button>
             </div>
         </div>
         
