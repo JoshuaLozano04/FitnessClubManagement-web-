@@ -1,4 +1,3 @@
-
 <?php
 include 'database.php';
 
@@ -68,7 +67,7 @@ if (!$result) {
         <table>
             <thead class="table-header">
                 <tr>
-                    <th>ID</th>
+                    <th>Profile</th>
                     <th>Name</th>
                     <th>Membership Start</th>
                     <th>Membership End</th>
@@ -81,13 +80,20 @@ if (!$result) {
                 <?php
                 // Fetch and display members from the database
                 while ($row = mysqli_fetch_assoc($result)) {
+                    $profilePicturePath = '../storage/profiles/' . htmlspecialchars($row['profile_picture']);
                     echo "<tr>";
-                    echo "<td>" . ($row['id']) . "</td>";
-                    echo "<td>" . ($row['fullname']) . "</td>";
-                    echo "<td>" . ($row['membership_start']) . "</td>";
-                    echo "<td>" . ($row['membership_end']) . "</td>";
-                    echo "<td>" . ($row['role']) . "</td>"; 
-                    echo "<td>" . ($row['status']) . "</td>";
+                    echo "<td>";
+                    if (file_exists($profilePicturePath)) {
+                        echo "<img src='$profilePicturePath' alt='Profile Picture' width='50' height='50'>";
+                    } else {
+                        echo "Image not found: $profilePicturePath";
+                    }
+                    echo "</td>";
+                    echo "<td>" . htmlspecialchars($row['fullname']) . "</td>";
+                    echo "<td>" . htmlspecialchars($row['membership_start']) . "</td>";
+                    echo "<td>" . htmlspecialchars($row['membership_end']) . "</td>";
+                    echo "<td>" . htmlspecialchars($row['role']) . "</td>"; 
+                    echo "<td>" . htmlspecialchars($row['status']) . "</td>";
                     echo "<td><a href='index.php?page=Members/editMembers&id=" . $row['id'] . "' class='edit-button'>Edit</a></td>";
                     echo "</tr>";
                 }

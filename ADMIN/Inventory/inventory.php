@@ -35,6 +35,7 @@ $result = mysqli_query($conn, "SELECT * FROM inventory");
         <table>
             <thead>
                 <tr>
+                    <th>Product Image</th>
                     <th>Product Name</th>
                     <th>Description</th>
                     <th>Price</th>
@@ -42,9 +43,19 @@ $result = mysqli_query($conn, "SELECT * FROM inventory");
                     <th>Actions</th>
                 </tr>
             </thead>
-            <tbody">
+            <tbody>
                 <?php while ($row = mysqli_fetch_assoc($result)) : ?>
                 <tr>
+                    <td>
+                        <?php
+                        $productImagePath = '../storage/products/' . htmlspecialchars($row['product_image']);
+                        if (file_exists($productImagePath)) {
+                            echo "<img src='$productImagePath' alt='Product Image' width='50' height='50'>";
+                        } else {
+                            echo "Image not found: $productImagePath";
+                        }
+                        ?>
+                    </td>
                     <td><?php echo htmlspecialchars($row['product_name']); ?></td>
                     <td><?php echo htmlspecialchars($row['description']); ?></td>
                     <td><?php echo number_format($row['price'], 2); ?></td>
