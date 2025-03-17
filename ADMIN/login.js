@@ -1,14 +1,27 @@
-document.getElementById("togglePassword").addEventListener("click", function () {
-    let passwordField = document.getElementById("password");
-    let icon = this;
-    
-    if (passwordField.type === "password") {
-        passwordField.type = "text";
-        icon.classList.remove("ri-eye-off-fill");
-        icon.classList.add("ri-eye-fill"); // Open eye when visible
-    } else {
-        passwordField.type = "password";
-        icon.classList.remove("ri-eye-fill");
-        icon.classList.add("ri-eye-off-fill"); // Closed eye when hidden
-    }
+const registerButton = document.getElementById("register");
+const loginButton = document.getElementById("login");
+const container = document.getElementById("container");
+const backButton = document.querySelector(".back");
+
+/*Double-Sided Gif*/
+registerButton.addEventListener("click", () =>{
+    container.classList.add("right-panel-active");
 });
+
+loginButton.addEventListener("click", () =>{
+    container.classList.remove("right-panel-active");
+});
+
+document.querySelectorAll(".togglePassword").forEach((icon) => {
+    icon.addEventListener("click", function () {
+        const passwordInput = document.getElementById(this.dataset.target);
+        if (passwordInput.type === "password") {
+            passwordInput.type = "text";
+            this.classList.replace("ri-eye-off-fill", "ri-eye-fill");
+        } else {
+            passwordInput.type = "password";
+            this.classList.replace("ri-eye-fill", "ri-eye-off-fill");
+        }
+    });
+});
+
