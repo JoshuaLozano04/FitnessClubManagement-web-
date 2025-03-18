@@ -47,7 +47,7 @@ $result = mysqli_query($conn, "SELECT * FROM inventory");
                 <?php while ($row = mysqli_fetch_assoc($result)) : ?>
                 <tr>
                     <td>
-                        <?php
+                        <?php   
                         $productImagePath = '../storage/products/' . htmlspecialchars($row['product_image']);
                         if (file_exists($productImagePath)) {
                             echo "<img src='$productImagePath' alt='Product Image' width='50' height='50'>";

@@ -20,8 +20,8 @@
             $currentDateTime = time();
             if ($endDateTime < $currentDateTime) {
                 // Delete the assignment if the end time has passed
-                $deleteQuery = $conn->prepare("DELETE FROM trainer_assignments WHERE id = ?");
-                $deleteQuery->bind_param('i', $row['id']);
+                $deleteQuery = $conn->prepare("DELETE FROM trainer_assignments WHERE assignment_id = ?");
+                $deleteQuery->bind_param('i', $row['assignment_id']);
                 $deleteQuery->execute();
                 $deleteQuery->close();
             } elseif ($row['status'] !== 'rejected') {
@@ -78,7 +78,7 @@
         foreach ($assignments as $assignment) {
             if (date('Y-m-d', strtotime($assignment['assignment_date'])) == "$currentYear-$currentMonth-$day") {
                 echo "<div class='assignment'>";
-                echo $assignment['trainer_name'] . " (" . $assignment['start_time'] . " - " . $assignment['end_time'] . ")";
+                echo $assignment['trainer_name'] . " (" . date('g:i A', strtotime($assignment['start_time'])) . " - " . date('g:i A', strtotime($assignment['end_time'])) . ")";
                 echo "</div>";
             }
         }
@@ -103,8 +103,8 @@
             echo "<td>" . $row['user_name'] . "</td>";
             echo "<td>" . $row['trainer_name'] . "</td>";
             echo "<td>" . date('F j, Y', strtotime($row['date_of_training'])) . "</td>";
-            echo "<td>" . $row['time_start'] . "</td>";
-            echo "<td>" . $row['time_end'] . "</td>";
+            echo "<td>" . date('g:i A', strtotime($row['time_start'])) . "</td>";
+            echo "<td>" . date('g:i A', strtotime($row['time_end'])) . "</td>";
             echo "<td>" . $row['description'] . "</td>";
             echo "<td>" . date('F j, Y', strtotime($row['request_date'])) . "</td>";
             echo "<td>" . $row['status'] . "</td>";
@@ -135,8 +135,8 @@
             echo "<td>" . $row['user_name'] . "</td>";
             echo "<td>" . $row['trainer_name'] . "</td>";
             echo "<td>" . date('F j, Y', strtotime($row['assignment_date'])) . "</td>";
-            echo "<td>" . $row['start_time'] . "</td>";
-            echo "<td>" . $row['end_time'] . "</td>";
+            echo "<td>" . date('g:i A', strtotime($row['start_time'])) . "</td>";
+            echo "<td>" . date('g:i A', strtotime($row['end_time'])) . "</td>";
             echo "<td>" . $row['status'] . "</td>";
             echo "</tr>";
         }
