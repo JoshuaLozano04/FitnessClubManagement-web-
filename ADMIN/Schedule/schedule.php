@@ -18,31 +18,23 @@
         while ($row = $result->fetch_assoc()) {
             $endDateTime = strtotime($row['assignment_date'] . ' ' . $row['end_time']);
             $currentDateTime = time();
-            if ($endDateTime < $currentDateTime) {
-                // Delete the assignment if the end time has passed
-                $deleteQuery = $conn->prepare("DELETE FROM trainer_assignments WHERE assignment_id = ?");
-                $deleteQuery->bind_param('i', $row['assignment_id']);
-                $deleteQuery->execute();
-                $deleteQuery->close();
-            } elseif ($row['status'] !== 'rejected') {
-                // Only add assignments that are not rejected
+            if ($endDateTime >= $currentDateTime && $row['status'] !== 'rejected') {
+                // Only add assignments that are not rejected and have not ended
                 $assignments[] = $row;
             }
         }
     }
 
     // Fetch all trainer requests
+    $requests = [];
     $result = $conn->query("SELECT * FROM trainer_request");
     if ($result->num_rows > 0) {
         while ($row = $result->fetch_assoc()) {
             $endDateTime = strtotime($row['date_of_training'] . ' ' . $row['time_end']);
             $currentDateTime = time();
-            if ($endDateTime < $currentDateTime) {
-                // Delete the request if the end time has passed
-                $deleteQuery = $conn->prepare("DELETE FROM trainer_request WHERE request_id = ?");
-                $deleteQuery->bind_param('i', $row['request_id']);
-                $deleteQuery->execute();
-                $deleteQuery->close();
+            if ($endDateTime >= $currentDateTime) {
+                // Only add requests that have not ended
+                $requests[] = $row;
             }
         }
     }
@@ -99,20 +91,24 @@
         echo "<tr class='table-header'><td><strong>Trainee Name</strong></td><td><strong>Trainer Name</strong></td><td><Strong>Date of Training</Strong></td><td><Strong>Time Start</Strong></td><td><Strong>Time End</Strong></td><td><Strong>Description</Strong></td><td><Strong>Request Date</Strong></td><td><Strong>Status</Strong></td><td><Strong>Actions</Strong></td></tr>";
 
         while ($row = $result->fetch_assoc()) {
-            echo "<tr>";
-            echo "<td>" . $row['user_name'] . "</td>";
-            echo "<td>" . $row['trainer_name'] . "</td>";
-            echo "<td>" . date('F j, Y', strtotime($row['date_of_training'])) . "</td>";
-            echo "<td>" . date('g:i A', strtotime($row['time_start'])) . "</td>";
-            echo "<td>" . date('g:i A', strtotime($row['time_end'])) . "</td>";
-            echo "<td>" . $row['description'] . "</td>";
-            echo "<td>" . date('F j, Y', strtotime($row['request_date'])) . "</td>";
-            echo "<td>" . $row['status'] . "</td>";
-            $buttonText = $row['status'] == 'approved' ? 'Edit' : 'Manage';
-            echo "<td>
-                    <a href='Schedule/manageRequest.php?request_id=" . $row['request_id'] . "'><button type='button' class='manage-button'>$buttonText</button></a>
-                  </td>";
-            echo "</tr>";
+            $endDateTime = strtotime($row['date_of_training'] . ' ' . $row['time_end']);
+            $currentDateTime = time();
+            if ($endDateTime >= $currentDateTime) {
+                echo "<tr>";
+                echo "<td>" . $row['user_name'] . "</td>";
+                echo "<td>" . $row['trainer_name'] . "</td>";
+                echo "<td>" . date('F j, Y', strtotime($row['date_of_training'])) . "</td>";
+                echo "<td>" . date('g:i A', strtotime($row['time_start'])) . "</td>";
+                echo "<td>" . date('g:i A', strtotime($row['time_end'])) . "</td>";
+                echo "<td>" . $row['description'] . "</td>";
+                echo "<td>" . date('F j, Y', strtotime($row['request_date'])) . "</td>";
+                echo "<td>" . $row['status'] . "</td>";
+                $buttonText = $row['status'] == 'approved' ? 'Edit' : 'Manage';
+                echo "<td>
+                        <a href='Schedule/manageRequest.php?request_id=" . $row['request_id'] . "'><button type='button' class='manage-button'>$buttonText</button></a>
+                      </td>";
+                echo "</tr>";
+            }
         }
 
         echo "</table>";
@@ -131,14 +127,18 @@
         echo "<tr class='table-header'><td><strong>Trainee Name</strong></td><td><Strong>Trainer Name</Strong></td><td><Strong>Scheduled Date</Strong></td><td><Strong>Start Time</Strong></td><td><Strong>End Time</Strong></td><td><Strong>Status</Strong></td></tr>";
 
         while ($row = $result->fetch_assoc()) {
-            echo "<tr>";
-            echo "<td>" . $row['user_name'] . "</td>";
-            echo "<td>" . $row['trainer_name'] . "</td>";
-            echo "<td>" . date('F j, Y', strtotime($row['assignment_date'])) . "</td>";
-            echo "<td>" . date('g:i A', strtotime($row['start_time'])) . "</td>";
-            echo "<td>" . date('g:i A', strtotime($row['end_time'])) . "</td>";
-            echo "<td>" . $row['status'] . "</td>";
-            echo "</tr>";
+            $endDateTime = strtotime($row['assignment_date'] . ' ' . $row['end_time']);
+            $currentDateTime = time();
+            if ($endDateTime >= $currentDateTime) {
+                echo "<tr>";
+                echo "<td>" . $row['user_name'] . "</td>";
+                echo "<td>" . $row['trainer_name'] . "</td>";
+                echo "<td>" . date('F j, Y', strtotime($row['assignment_date'])) . "</td>";
+                echo "<td>" . date('g:i A', strtotime($row['start_time'])) . "</td>";
+                echo "<td>" . date('g:i A', strtotime($row['end_time'])) . "</td>";
+                echo "<td>" . $row['status'] . "</td>";
+                echo "</tr>";
+            }
         }
 
         echo "</table>";
