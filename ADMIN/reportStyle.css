@@ -1,0 +1,90 @@
+.review-report {
+    padding: 20px;
+    max-width: 1200px; /* Increase the max-width to make it wider */
+    margin: 0 auto;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #fff;
+}
+
+.review-summary {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.review-summary div {
+    text-align: center;
+    flex: 1;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    margin: 0 10px;
+}
+
+.review-summary h3 {
+    margin: 0;
+}
+
+.review-summary p {
+    font-size: 24px;
+    margin: 5px 0;
+}
+
+.stars {
+    color: gold;
+}
+
+.recent-reviews {
+    border-top: 1px solid #ddd;
+    padding-top: 20px;
+}
+
+.recent-reviews h3 {
+    margin: 0 0 10px;
+}
+
+.recent-reviews select {
+    margin-bottom: 20px;
+    padding: 5px;
+    border-radius: 4px;
+    border: 1px solid #ddd;
+}
+
+.recent-reviews ul {
+    list-style: none;
+    padding: 0;
+}
+
+.recent-reviews li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid #ddd;
+}
+
+.reviewer-info {
+    display: flex;
+    align-items: center;
+}
+
+.reviewer-info img {
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    margin-right: 10px;
+}
+
+.reviewer-info h4 {
+    margin: 0;
+}
+
+.reviewer-info p {
+    margin: 0;
+    color: gold;
+}
+
+.recent-reviews small {
+    color: #777;
+}
