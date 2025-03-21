@@ -31,7 +31,7 @@ $result = $conn->query($sql);
         <h2>Total Orders <strong><?php echo $total_orders; ?></strong></h2>
             <div class="header-actions-order">
                 <div class="search-bar">
-                    <input type="text" placeholder="Search Product...">
+                    <input type="text" id="orderSearch" placeholder="Search Orders...">
                 </div>
                 <button class="add-button" onclick="openModal()">+ Add Purchase Order</button>
             </div>
@@ -92,13 +92,6 @@ $result = $conn->query($sql);
             </form>
         </div>
     </div>
-    <script>
-        function openModal() {
-            document.getElementById('orderForm').style.display = 'flex';
-        }
-        function closeModal() {
-            document.getElementById('orderForm').style.display = 'none';
-        }
-    </script>
+    <script src="Orders/orderScript.js"></script>
 </body>
 </html>
