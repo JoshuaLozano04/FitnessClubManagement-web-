@@ -6,6 +6,6 @@
     <title>Document</title>
 </head>
 <body>
-    <p>Welcome to the report page</p>
+    <p></p>
 </body>
 </html>
