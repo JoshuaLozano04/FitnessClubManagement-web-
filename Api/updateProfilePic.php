@@ -1,6 +1,6 @@
 <?php
 // Include database connection
-include 'db_connection.php';
+include 'database.php';
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // Check if file was uploaded without errors
@@ -23,28 +23,31 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         // Verify MIME type of the file
         if (in_array($filetype, ['image/jpeg', 'image/png', 'image/gif'])) {
-            // Check whether the 'profiles' directory exists, if not, create it
-            if (!is_dir('profiles')) {
-                mkdir('profiles', 0777, true);
+            $directory = __DIR__ . '/../storage/profiles'; // Correct directory path
+            if (!is_dir($directory)) {
+                mkdir($directory, 0777, true);
             }
 
-            // Move the uploaded file to the 'profiles' directory
+            // Move the uploaded file to the 'storage/profiles' directory
             $new_filename = uniqid() . "." . $ext;
-            move_uploaded_file($_FILES['profile_picture']['tmp_name'], "profiles/" . $new_filename);
-
-            // Update the user's profile picture in the database
-            $email = $_POST['email']; // Assuming email is sent via POST
-            $sql = "UPDATE users SET profile_picture = ? WHERE email = ?";
-            if ($stmt = $conn->prepare($sql)) {
-                $stmt->bind_param('ss', $new_filename, $email);
-                if ($stmt->execute()) {
-                    echo "Profile picture updated successfully.";
+            $destination = $directory . "/" . $new_filename;
+            if (move_uploaded_file($_FILES['profile_picture']['tmp_name'], $destination)) {
+                // Update the user's profile picture in the database
+                $email = $_POST['email']; // Assuming email is sent via POST
+                $sql = "UPDATE users SET profile_picture = ? WHERE email = ?";
+                if ($stmt = $conn->prepare($sql)) {
+                    $stmt->bind_param('ss', $new_filename, $email); // Save only the file name
+                    if ($stmt->execute()) {
+                        echo "Profile picture updated successfully.";
+                    } else {
+                        echo "Error: Could not update profile picture.";
+                    }
+                    $stmt->close();
                 } else {
-                    echo "Error: Could not update profile picture.";
+                    echo "Error: Could not prepare the SQL statement.";
                 }
-                $stmt->close();
             } else {
-                echo "Error: Could not prepare the SQL statement.";
+                echo "Error: There was a problem moving the uploaded file.";
             }
         } else {
             echo "Error: There was a problem uploading your file. Please try again.";

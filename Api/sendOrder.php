@@ -47,11 +47,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit;
     }
 
-    // Get the product price using the product name
-    $stmt = $conn->prepare("SELECT price FROM inventory WHERE product_name = ?");
+    // Get the product price and product image using the product name
+    $stmt = $conn->prepare("SELECT price, product_image FROM inventory WHERE product_name = ?");
     $stmt->bind_param("s", $product_name);
     $stmt->execute();
-    $stmt->bind_result($product_price);
+    $stmt->bind_result($product_price, $product_image);
     $stmt->fetch();
     $stmt->close();
 
@@ -70,8 +70,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $order_date = date('Y-m-d H:i:s');
 
     // Prepare the SQL statement to insert the order
-    $stmt = $conn->prepare("INSERT INTO purchase_orders (customer_name, product_name, price, quantity, status, order_date) VALUES (?, ?, ?, ?, 'pending', ?)");
-    $stmt->bind_param("ssdis", $user_name, $product_name, $total_price, $quantity, $order_date);
+    $stmt = $conn->prepare("INSERT INTO purchase_orders (customer_name, product_name, product_picture, price, quantity, status, order_date) VALUES (?, ?, ?, ?, ?, 'pending', ?)");
+    $stmt->bind_param("sssdis", $user_name, $product_name, $product_image, $total_price, $quantity, $order_date);
 
     // Execute the statement
     if ($stmt->execute()) {
