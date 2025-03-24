@@ -1,9 +1,7 @@
-// ...existing code...
-
 document.addEventListener('DOMContentLoaded', function() {
     const ctx = document.getElementById('revenueChart').getContext('2d');
     const revenueChart = new Chart(ctx, {
-        type: 'bar', // You can change this to 'line', 'pie', etc.
+        type: 'line', // You can change this to 'line', 'pie', etc.
         data: {
             labels: ['January', 'February', 'March', 'April', 'May', 'June'],
             datasets: [{
@@ -46,5 +44,3 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 });
-
-// ...existing code...
