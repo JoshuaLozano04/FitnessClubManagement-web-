@@ -3,11 +3,15 @@ include 'database.php';
 
 // Check if the request method is POST
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // Get the raw POST data and decode the JSON payload
+    $rawData = file_get_contents("php://input");
+    $data = json_decode($rawData, true);
+
     // Check if email, fullname, and about_text are provided
-    if (isset($_POST['email']) && isset($_POST['fullname']) && isset($_POST['about_text'])) {
-        $email = $_POST['email'];
-        $fullname = $_POST['fullname'];
-        $about_text = $_POST['about_text'];
+    if (isset($data['email']) && isset($data['fullname']) && isset($data['about_text'])) {
+        $email = $data['email'];
+        $fullname = $data['fullname'];
+        $about_text = $data['about_text'];
 
         // Update the fullname in the users table
         $updateUserQuery = "UPDATE users SET fullname = ? WHERE email = ?";
