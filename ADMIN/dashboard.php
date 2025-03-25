@@ -23,6 +23,29 @@ $orderCount = $orderCountRow['order_count'];
 $totalRevenueResult = mysqli_query($conn, "SELECT SUM(price) as total_revenue FROM purchase_orders");
 $totalRevenueRow = mysqli_fetch_assoc($totalRevenueResult);
 $totalRevenue = $totalRevenueRow['total_revenue'];
+
+// Fetch monthly revenue
+$monthlyRevenueResult = mysqli_query($conn, "
+    SELECT 
+        DATE_FORMAT(order_date, '%Y-%m') as month, 
+        SUM(price) as total_revenue 
+    FROM purchase_orders 
+    GROUP BY DATE_FORMAT(order_date, '%Y-%m')
+    ORDER BY month ASC
+");
+
+$monthlyRevenueData = [];
+while ($row = mysqli_fetch_assoc($monthlyRevenueResult)) {
+    $monthlyRevenueData[] = $row;
+}
+
+// Prepare data for Chart.js
+$months = [];
+$revenues = [];
+foreach ($monthlyRevenueData as $data) {
+    $months[] = $data['month'];
+    $revenues[] = $data['total_revenue'];
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -61,7 +84,7 @@ $totalRevenue = $totalRevenueRow['total_revenue'];
             <table>
                 <thead>
                     <tr>
-                        <th>Image</th>
+                        <th>‎ </th>
                         <th>Product Name</th>
                         <th>Price</th>
                         <th>Stocks</th>
@@ -84,6 +107,15 @@ $totalRevenue = $totalRevenueRow['total_revenue'];
                     <td><?php echo htmlspecialchars($row['product_name']); ?></td>
                     <td><?php echo number_format($row['price'], 2); ?></td>
                     <td><?php echo $row['stock_quantity']; ?></td>
+                    <td>
+                        <?php if ($row['stock_quantity'] > 6) : ?>
+                            <span class="in-stock">In Stock</span>
+                        <?php elseif ($row['stock_quantity'] >= 5) : ?>
+                            <span class="restock">Restock</span>
+                        <?php else : ?>
+                            <span class="out-of-stock">Out of Stock</span>
+                        <?php endif; ?>
+                    </td>
                 </tr>
                 <?php endwhile; ?>
                 <tr>
@@ -122,6 +154,77 @@ $totalRevenue = $totalRevenueRow['total_revenue'];
             </table>
         </div>
     </div>
-    <script src="scripts.js"></script>
+    <script>
+    const ctx = document.getElementById('revenueChart').getContext('2d');
+    const revenueChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: <?php echo json_encode($months); ?>,
+            datasets: [{
+                label: 'Monthly Revenue',
+                data: <?php echo json_encode($revenues); ?>,
+                borderColor: 'rgba(75, 192, 192, 1)',
+                backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                borderWidth: 2,
+                fill: true,
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false, // Allows you to control the height and width
+            plugins: {
+                legend: {
+                    display: true,
+                    position: 'top',
+                    labels: {
+                        boxWidth: 10, // Reduce the size of legend boxes
+                        font: {
+                            size: 10 // Reduce font size for legend
+                        }
+                    }
+                }
+            },
+            layout: {
+                padding: {
+                    top: 10,
+                    bottom: 10,
+                    left: 10,
+                    right: 10
+                }
+            },
+            scales: {
+                x: {
+                    title: {
+                        display: true,
+                        text: 'Month',
+                        font: {
+                            size: 12 // Reduce font size for x-axis title
+                        }
+                    },
+                    ticks: {
+                        font: {
+                            size: 10 // Reduce font size for x-axis labels
+                        }
+                    }
+                },
+                y: {
+                    title: {
+                        display: true,
+                        text: 'Revenue (₱)',
+                        font: {
+                            size: 12 // Reduce font size for y-axis title
+                        }
+                    },
+                    ticks: {
+                        font: {
+                            size: 10 // Reduce font size for y-axis labels
+                        },
+                        beginAtZero: true
+                    }
+                }
+            }
+        }
+    });
+    </script>
 </body>
 </html>
