@@ -1,5 +1,5 @@
 <?php
-header('Content-Type: application/json'); // Ensure JSON response
+header('Content-Type: application/json'); 
 include 'database.php';
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {

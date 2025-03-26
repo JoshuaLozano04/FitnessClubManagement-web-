@@ -10,16 +10,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Determine if the request is JSON or form-urlencoded
     if ($data) {
         // JSON payload
-        $user_email = $data['user_email'] ?? null;
-        $trainer_email = $data['trainer_email'] ?? null;
+        $request_id = $data['request_id'] ?? null;
         $date_of_training = $data['date_of_training'] ?? null;
         $time_start = $data['time_start'] ?? null;
         $time_end = $data['time_end'] ?? null;
         $description = $data['description'] ?? null;
     } else {
         // Form-urlencoded payload
-        $user_email = $_POST['user_email'] ?? null;
-        $trainer_email = $_POST['trainer_email'] ?? null;
+        $request_id = $_POST['request_id'] ?? null;
         $date_of_training = $_POST['date_of_training'] ?? null;
         $time_start = $_POST['time_start'] ?? null;
         $time_end = $_POST['time_end'] ?? null;
@@ -27,7 +25,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     // Check if all required parameters are set
-    if ($user_email && $trainer_email && $date_of_training && $time_start && $time_end && $description) {
+    if ($request_id && $date_of_training && $time_start && $time_end && $description) {
         // Validate date_of_training
         if (!preg_match('/^\d{4}-\d{2}-\d{2}$/', $date_of_training)) {
             echo json_encode(["status" => "error", "message" => "Invalid date format. Use YYYY-MM-DD."]);
@@ -48,45 +46,30 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $time_start_24 = date("H:i", strtotime($time_start));
         $time_end_24 = date("H:i", strtotime($time_end));
 
-        // Get the full name of the user
-        $userQuery = $conn->prepare("SELECT fullname FROM users WHERE email = ?");
-        $userQuery->bind_param("s", $user_email);
-        $userQuery->execute();
-        $userResult = $userQuery->get_result();
-        if ($userResult->num_rows > 0) {
-            $user_name = $userResult->fetch_assoc()['fullname'];
-        } else {
-            echo json_encode(["status" => "error", "message" => "User not found."]);
+        // Check if the request exists
+        $checkQuery = $conn->prepare("SELECT * FROM trainer_request WHERE request_id = ?");
+        $checkQuery->bind_param("i", $request_id);
+        $checkQuery->execute();
+        $result = $checkQuery->get_result();
+        if ($result->num_rows === 0) {
+            echo json_encode(["status" => "error", "message" => "Request not found."]);
             exit;
         }
-        $userQuery->close();
+        $checkQuery->close();
 
-        // Get the full name of the trainer
-        $trainerQuery = $conn->prepare("SELECT fullname FROM users WHERE email = ?");
-        $trainerQuery->bind_param("s", $trainer_email);
-        $trainerQuery->execute();
-        $trainerResult = $trainerQuery->get_result();
-        if ($trainerResult->num_rows > 0) {
-            $trainer_name = $trainerResult->fetch_assoc()['fullname'];
+        // Update the trainer request
+        $updateQuery = $conn->prepare("UPDATE trainer_request SET date_of_training = ?, time_start = ?, time_end = ?, description = ? WHERE request_id = ?");
+        $updateQuery->bind_param("ssssi", $date_of_training, $time_start_24, $time_end_24, $description, $request_id);
+
+        // Execute the update query
+        if ($updateQuery->execute()) {
+            echo json_encode(["status" => "success", "message" => "Trainer request updated successfully."]);
         } else {
-            echo json_encode(["status" => "error", "message" => "Trainer not found."]);
-            exit;
-        }
-        $trainerQuery->close();
-
-        // Prepare the SQL statement to insert the request
-        $stmt = $conn->prepare("INSERT INTO trainer_request (user_email, user_name, trainer_email, trainer_name, date_of_training, time_start, time_end, description, request_date, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, NOW(), 'pending')");
-        $stmt->bind_param("ssssssss", $user_email, $user_name, $trainer_email, $trainer_name, $date_of_training, $time_start_24, $time_end_24, $description);
-
-        // Execute the statement
-        if ($stmt->execute()) {
-            echo json_encode(["status" => "success", "message" => "Trainer request added successfully."]);
-        } else {
-            echo json_encode(["status" => "error", "message" => "Error: " . $stmt->error]);
+            echo json_encode(["status" => "error", "message" => "Failed to update trainer request."]);
         }
 
         // Close the statement and the database connection
-        $stmt->close();
+        $updateQuery->close();
         $conn->close();
     } else {
         echo json_encode(["status" => "error", "message" => "Missing required parameters."]);
