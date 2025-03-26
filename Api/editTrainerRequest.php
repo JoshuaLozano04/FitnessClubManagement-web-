@@ -1,13 +1,10 @@
 <?php
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Include the database connection file
     include 'database.php';
 
-    // Check if the request has a JSON payload
     $rawData = file_get_contents("php://input");
     $data = json_decode($rawData, true);
 
-    // Determine if the request is JSON or form-urlencoded
     if ($data) {
         // JSON payload
         $request_id = $data['request_id'] ?? null;
@@ -24,7 +21,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $description = $_POST['description'] ?? null;
     }
 
-    // Check if all required parameters are set
+    // Check if all required parameters are se  t
     if ($request_id && $date_of_training && $time_start && $time_end && $description) {
         // Validate date_of_training
         if (!preg_match('/^\d{4}-\d{2}-\d{2}$/', $date_of_training)) {
