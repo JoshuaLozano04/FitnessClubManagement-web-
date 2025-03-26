@@ -1,6 +1,4 @@
 <?php
-// filepath: c:\xampp\htdocs\PumpingIronGym\Api\fetchTrainerProfile.php
-
 include 'database.php';
 
 // Check if the request method is GET
@@ -10,7 +8,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         $email = $_GET['email'];
 
         // Fetch user data from the users table
-        $userQuery = "SELECT fullname, email, role, profile_picture FROM users WHERE email = ?";
+        $userQuery = "SELECT fullname, email, role, profile_picture FROM users WHERE email = ? AND role = 'trainer'";
         $stmt = $conn->prepare($userQuery);
         $stmt->bind_param("s", $email);
         $stmt->execute();
@@ -19,7 +17,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         $stmt->close();
 
         if ($userData) {
-            // Fetch about info from the trainers_about table
             $aboutQuery = "SELECT about FROM trainers_about WHERE email = ?";
             $stmt = $conn->prepare($aboutQuery);
             $stmt->bind_param("s", $email);
@@ -47,13 +44,32 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         } else {
             echo json_encode([
                 "status" => "error",
-                "message" => "User not found."
+                "message" => "Trainer not found."
             ]);
         }
     } else {
+        // Fetch all trainer profiles
+        $userQuery = "SELECT u.fullname, u.email, u.role, u.profile_picture, ta.about 
+                      FROM users u 
+                      LEFT JOIN trainers_about ta ON u.email = ta.email
+                      WHERE u.role = 'trainer'";
+        $result = $conn->query($userQuery);
+
+        $profiles = [];
+        while ($row = $result->fetch_assoc()) {
+            $profiles[] = [
+                "fullname" => $row['fullname'],
+                "email" => $row['email'],
+                "role" => $row['role'],
+                "profile_picture" => isset($row['profile_picture']) ? trim($row['profile_picture']) : null,
+                "about" => $row['about'] ?? "Update your about info"
+            ];
+        }
+
         echo json_encode([
-            "status" => "error",
-            "message" => "Email parameter is required."
+            "status" => "success",
+            "message" => "All trainer profiles fetched successfully.",
+            "profiles" => $profiles
         ]);
     }
 
