@@ -3,6 +3,7 @@
         "phpmailer/phpmailer": "^6.9",
         "league/oauth2-client": "^2.8",
         "sendgrid/sendgrid": "^8.1",
-        "ralouphie/getallheaders": "^3.0"
+        "ralouphie/getallheaders": "^3.0",
+        "stripe/stripe-php": "^16.6"
     }
 }
