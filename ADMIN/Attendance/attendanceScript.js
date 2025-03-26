@@ -24,7 +24,7 @@ function searchTrainee() {
 }
 
 $(document).ready(function() {
-    $(".view-btn").on("click", function() {
+    $(document).on("click", ".view-btn", function() {
         let traineeId = $(this).data("id");
 
         $.ajax({
@@ -38,12 +38,13 @@ $(document).ready(function() {
                 $("#checkout-time").text(data.checkout_time ? data.checkout_time : "Not Checked Out");
 
                 if (data.checkout_time) {
-                    let checkin = new Date(`2024-01-01 ${data.checkin_time}`);
-                    let checkout = new Date(`2024-01-01 ${data.checkout_time}`);
+                    let checkin = new Date(`2024-01-01T${data.checkin_time}`);
+                    let checkout = new Date(`2024-01-01T${data.checkout_time}`);
                     let diffMs = checkout - checkin;
-                    let totalHours = (diffMs / (1000 * 60 * 60)).toFixed(2);
+                    let hours = Math.floor(diffMs / (1000 * 60 * 60));
+                    let minutes = Math.floor((diffMs % (1000 * 60 * 60)) / (1000 * 60));
 
-                    $("#total-hours").text(totalHours + " hours");
+                    $("#total-hours").text(`${hours} hrs ${minutes} mins`);
                 } else {
                     $("#total-hours").text("N/A");
                 }
