@@ -153,7 +153,7 @@ $notificationCount = $unreadNotifications['unread_count'];
         <li><a href="index.php?page=Inventory/inventory" class="<?= ($_GET['page'] ?? '') == 'Inventory/inventory' ? 'active' : ''; ?>"><i class="ri-store-fill"></i>Inventory</a></li>
         <li><a href="index.php?page=Orders/orders" class="<?= ($_GET['page'] ?? '') == 'Orders/orders' ? 'active' : ''; ?>"><i class="ri-shopping-bag-4-fill"></i>Orders</a></li>
         <li><a href="index.php?page=report" class="<?= ($_GET['page'] ?? '') == 'report' ? 'active' : ''; ?>"><i class="ri-bar-chart-2-fill"></i>Review</a></li>
-        <li><a href="index.php?page=attendance" class="<?= ($_GET['page'] ?? '') == 'attendance' ? 'active' : ''; ?>"><i class="ri-check-line"></i>Attendance</a></li>
+        <li><a href="index.php?page=Attendance/attendance" class="<?= ($_GET['page'] ?? '') == 'Attendance/attendance' ? 'active' : ''; ?>"><i class="ri-check-line"></i>Attendance</a></li>
         <li><a href="index.php?page=Users/users" class="<?= ($_GET['page'] ?? '') == 'Users/users' ? 'active' : ''; ?>"><i class="ri-group-fill"></i>User Account</a></li>
     </ul>
 
@@ -172,7 +172,7 @@ $notificationCount = $unreadNotifications['unread_count'];
                         'Members/editMembers' => 'Edit Member',
                         'Schedule/schedule' => 'Schedule',
                         'Schedule/manageRequest' => 'Manage Request',
-                        'attendance' => 'Attendance',
+                        'Attendance/attendance' => 'Attendance',
                         'report' => 'Review',
                         'Orders/orders' => 'Orders',
                         'Inventory/inventory' => 'Inventory',
@@ -271,7 +271,7 @@ $notificationCount = $unreadNotifications['unread_count'];
         </div>
 
         <?php
-        $allowed_pages = ['dashboard', 'Members/members', 'Members/editMembers', 'Schedule/schedule', "Schedule/manageRequest",'attendance', 'report', 'Inventory/inventory', 'Inventory/editInventory', 'Orders/orders', 'Users/users'];
+        $allowed_pages = ['dashboard', 'Members/members', 'Members/editMembers', 'Schedule/schedule', "Schedule/manageRequest",'Attendance/attendance', 'report', 'Inventory/inventory', 'Inventory/editInventory', 'Orders/orders', 'Users/users'];
         $page = $_GET['page'] ?? 'dashboard';
         if (in_array($page, $allowed_pages)) {
             include "$page.php";
