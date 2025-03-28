@@ -22,9 +22,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
             $fullname = $userData['fullname'];
 
             // Fetch all purchase orders that match the fullname
-            $ordersQuery = "SELECT * FROM purchase_orders WHERE customer_name = ?";
+            $ordersQuery = "SELECT * FROM purchase_orders WHERE user_email = ?";
             $stmt = $conn->prepare($ordersQuery);
-            $stmt->bind_param("s", $fullname);
+            $stmt->bind_param("s", $email);
             $stmt->execute();
             $ordersResult = $stmt->get_result();
 
@@ -54,7 +54,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         ]);
     }
 
-    // Close the database connection
     $conn->close();
 } else {
     echo json_encode([

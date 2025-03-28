@@ -69,9 +69,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Get the current date for the order_date
     $order_date = date('Y-m-d H:i:s');
 
-    // Prepare the SQL statement to insert the order
-    $stmt = $conn->prepare("INSERT INTO purchase_orders (customer_name, product_name, product_picture, price, quantity, status, order_date) VALUES (?, ?, ?, ?, ?, 'pending', ?)");
-    $stmt->bind_param("sssdis", $user_name, $product_name, $product_image, $total_price, $quantity, $order_date);
+    // Prepare the SQL statement to insert the order with email
+    $stmt = $conn->prepare("INSERT INTO purchase_orders (customer_name, user_email, product_name, product_picture, price, quantity, status, order_date) VALUES (?, ?, ?, ?, ?, ?, 'pending', ?)");
+    $stmt->bind_param("ssssdis", $user_name, $user_email, $product_name, $product_image, $total_price, $quantity, $order_date);
 
     // Execute the statement
     if ($stmt->execute()) {
@@ -95,4 +95,3 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         'message' => 'Invalid request method. Please use POST.'
     ]);
 }
-?>
