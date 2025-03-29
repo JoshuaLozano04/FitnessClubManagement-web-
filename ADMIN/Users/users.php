@@ -28,7 +28,7 @@
                 <div class="admin-info">
                     <div class="admin-img">
                         <?php if (!empty($user['profile_picture'])): ?>
-                            <img src="../storage/profiles/<?php echo $user['profile_picture']; ?>" alt="Admin Profile">
+                            <img src="../storage/profiles/<?php echo $user['profile_picture']; ?>" alt="Admin Profile" width="50" height="50">
                         <?php else: ?>
                             <img src="default-avatar.png" alt="Admin Profile">
                         <?php endif; ?>

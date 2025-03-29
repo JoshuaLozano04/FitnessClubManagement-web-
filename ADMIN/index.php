@@ -98,7 +98,7 @@ $notificationCount = $unreadNotifications['unread_count'];
             background: white;
             border: 1px solid #ddd;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            width: 300px;
+            width: 450px;
             max-height: 400px;
             overflow-y: auto;
             z-index: 1000;
