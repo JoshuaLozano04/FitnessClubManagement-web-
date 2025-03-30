@@ -1,51 +1,70 @@
 <?php
 session_start();
-include 'db_connection.php'; 
+include 'database.php';
+
+$response = ["success" => false, "message" => ""];
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $user_id = $_SESSION["user_id"]; // Assuming user is logged in
     $currentPassword = $_POST["currentPassword"];
     $newPassword = $_POST["newPassword"];
     $confirmPassword = $_POST["confirmPassword"];
-    $userId = $_SESSION["user_id"];
+    $logoutAfterChange = isset($_POST["logoutAfterChange"]) ? $_POST["logoutAfterChange"] : "false";
 
-    // Check if passwords match
-    if ($newPassword !== $confirmPassword) {
-        echo "<script>alert('New passwords do not match!'); window.history.back();</script>";
-        exit();
+    if (empty($currentPassword) || empty($newPassword) || empty($confirmPassword)) {
+        $response["message"] = "All fields are required.";
+        echo json_encode($response);
+        exit;
     }
-    
-    // Fetch user from DB
-    $sql = "SELECT password FROM users WHERE id = ?";
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param("i", $userId);
+
+    if ($newPassword !== $confirmPassword) {
+        $response["message"] = "New passwords do not match.";
+        echo json_encode($response);
+        exit;
+    }
+
+    if (strlen($newPassword) < 8) {
+        $response["message"] = "Password must be at least 8 characters.";
+        echo json_encode($response);
+        exit;
+    }
+
+    // Check current password
+    $stmt = $conn->prepare("SELECT password FROM users WHERE id = ?");
+    $stmt->bind_param("i", $user_id);
     $stmt->execute();
-    $stmt->store_result();
+    $stmt->bind_result($hashedPassword);
+    $stmt->fetch();
+    $stmt->close();
+
+    if (!password_verify($currentPassword, $hashedPassword)) {
+        $response["message"] = "Current password is incorrect.";
+        echo json_encode($response);
+        exit;
+    }
+
+    // Hash new password
+    $newHashedPassword = password_hash($newPassword, PASSWORD_DEFAULT);
+
+    // Update password
+    $updateStmt = $conn->prepare("UPDATE users SET password = ? WHERE id = ?");
+    $updateStmt->bind_param("si", $newHashedPassword, $user_id);
     
-    if ($stmt->num_rows > 0) {
-        $stmt->bind_result($hashedPassword);
-        $stmt->fetch();
+    if ($updateStmt->execute()) {
+        $response["success"] = true;
+        $response["message"] = "Password updated successfully.";
 
-        // Verify current password
-        if (password_verify($currentPassword, $hashedPassword)) {
-            $newHashedPassword = password_hash($newPassword, PASSWORD_DEFAULT);
-
-            // Update password in database
-            $updateSql = "UPDATE users SET password = ? WHERE id = ?";
-            $updateStmt = $conn->prepare($updateSql);
-            $updateStmt->bind_param("si", $newHashedPassword, $userId);
-            if ($updateStmt->execute()) {
-                echo "<script>alert('Password changed successfully!'); window.location.href = 'dashboard.php';</script>";
-            } else {
-                echo "<script>alert('Error updating password!'); window.history.back();</script>";
-            }
-        } else {
-            echo "<script>alert('Incorrect current password!'); window.history.back();</script>";
+        // Check if user wants to log out
+        if ($logoutAfterChange === "true") {
+            session_destroy();
+            $response["redirect"] = "login.php"; // Change this to your actual login page
         }
     } else {
-        echo "<script>alert('User not found!'); window.history.back();</script>";
+        $response["message"] = "Error updating password.";
     }
 
-    $stmt->close();
-    $conn->close();
+    $updateStmt->close();
 }
+
+echo json_encode($response);
 ?>

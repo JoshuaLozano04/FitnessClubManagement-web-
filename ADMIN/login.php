@@ -14,9 +14,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['login'])) {
     if (mysqli_num_rows($result) == 1) {
         $user = mysqli_fetch_assoc($result);
         if (password_verify($password, $user['password'])) {
-            if ($user['role'] == 'admin') {
+            if ($user['role'] == 'admin' || $user['role'] == 'staff') { 
+                // ✅ Store User ID in Session
+                $_SESSION["user_id"] = $user["id"];
                 $_SESSION['fullname'] = $user['fullname'];
                 $_SESSION['role'] = $user['role'];
+
+                error_log("Login successful. User ID: " . $_SESSION["user_id"]); // Debugging
+
                 header("Location: index.php");
                 exit();
             } else {
@@ -44,7 +49,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['login'])) {
 
     <div class="container" id="container">
         <div class="form-container register-container">
-            <form method="POST" action="Login/register.php">
+            <form method="POST" action="register.php">
                 <h1>Register Here</h1>
                 <input type="text" name="fullname" placeholder="Full Name" required>
                 <input type="email" name="email" placeholder="Email" required>
@@ -61,8 +66,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['login'])) {
                 <div class="role-container">
                     <select id="role" name="role" required>
                         <option value="" disabled selected>Select Role</option>
-                        <option value="Admin">Admin</option>
-                        <option value="Staff">Staff</option>
+                        <option value="admin">Admin</option>
+                        <option value="staff">Staff</option>
                     </select>
                 </div>
                 <button type="submit" name="register">Register</button>
