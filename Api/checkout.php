@@ -8,9 +8,15 @@ date_default_timezone_set("Asia/Manila");
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $attendance_id = $_POST['id'] ?? '';
+    $scanned_string = $_POST['scanned_string'] ?? '';
 
     if (empty($attendance_id)) {
         echo json_encode(["success" => false, "message" => "Missing check-in ID"]);
+        exit();
+    }
+
+    if ($scanned_string !== 'PumpingIronGym') {
+        echo json_encode(["success" => false, "message" => "Invalid QR Code"]);
         exit();
     }
 
