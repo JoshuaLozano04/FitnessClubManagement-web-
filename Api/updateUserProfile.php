@@ -19,9 +19,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt->bind_param("ss", $fullname, $email);
         
         if ($stmt->execute()) {
+            // Fetch the updated user data including profile picture
+            $fetchQuery = "SELECT fullname, email, role, profile_picture FROM users WHERE email = ?";
+            $stmt = $conn->prepare($fetchQuery);
+            $stmt->bind_param("s", $email);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            $user = $result->fetch_assoc();
+
+            // Construct the full image path
+            $profile_picture = !empty($user['profile_picture']) ? 
+                '../storage/profiles/' . $user['profile_picture'] : 
+                '../storage/profiles/default.png';
+
             echo json_encode([
                 "status" => "success", 
-                "message" => "User profile updated successfully."
+                "message" => "User profile updated successfully.",
+                "fullname" => $user['fullname'],
+                "email" => $user['email'],
+                "role" => $user['role'],
+                "profile_picture" => $profile_picture
             ]);
         } else {
             echo json_encode([

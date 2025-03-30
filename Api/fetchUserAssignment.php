@@ -10,20 +10,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         // Check if email is also provided
         if (isset($_GET['email'])) {
             $email = $_GET['email'];
-            // Prepare the SQL statement to fetch trainer assignments for the given date and email
-            $stmt = $conn->prepare("SELECT * FROM trainer_assignments WHERE assignment_date = ? AND trainer_email = ?");
+            // Prepare the SQL statement to fetch user assignments for the given date and email
+            $stmt = $conn->prepare("SELECT * FROM trainer_assignments WHERE assignment_date = ? AND user_email = ?");
             $stmt->bind_param("ss", $date, $email);
         } else {
-            // Prepare the SQL statement to fetch all trainer assignments for the given date
+            // Prepare the SQL statement to fetch all user assignments for the given date
             $stmt = $conn->prepare("SELECT * FROM trainer_assignments WHERE assignment_date = ?");
             $stmt->bind_param("s", $date);
         }
     } else if (isset($_GET['email'])) {
+        // If only email is provided, fetch all assignments for that user
         $email = $_GET['email'];
-        $stmt = $conn->prepare("SELECT * FROM trainer_assignments WHERE trainer_email = ?");
+        $stmt = $conn->prepare("SELECT * FROM trainer_assignments WHERE user_email = ?");
         $stmt->bind_param("s", $email);
     } else {
-        // Prepare the SQL statement to fetch all trainer assignments
+        // Prepare the SQL statement to fetch all user assignments
         $stmt = $conn->prepare("SELECT * FROM trainer_assignments");
     }
 
@@ -46,4 +47,4 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 } else {
     echo json_encode(["error" => "Invalid request method."]);
 }
-?>
+?> 

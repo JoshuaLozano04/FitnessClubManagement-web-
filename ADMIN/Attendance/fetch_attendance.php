@@ -11,7 +11,7 @@ if (isset($_POST['date'])) {
         while ($row = mysqli_fetch_assoc($trainee_result)) {
             echo "<tr class='trainee-row'>
                     <td>
-                        <img src='" . $row['trainee_image'] . "' alt='Trainee Image'>
+                        <img src='../storage/profiles/" . $row['trainee_image'] . "' alt='Trainee Image'>
                         <span class='trainee-name'>" . htmlspecialchars($row['trainee_name']) . "</span>
                     </td>
                     <td>" . date('F d, Y', strtotime($row['checkin_date'])) . "</td>
