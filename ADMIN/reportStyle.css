@@ -1,16 +1,18 @@
 .review-report {
     padding: 20px;
-    max-width: 1200px; /* Increase the max-width to make it wider */
+    max-width: 1200px;
     margin: 0 auto;
     border: 1px solid #ddd;
     border-radius: 8px;
     background-color: #fff;
+    margin-top: 20px;
 }
 
 .review-summary {
     display: flex;
     justify-content: space-between;
     margin-bottom: 20px;
+    padding: 20px;
 }
 
 .review-summary div {
