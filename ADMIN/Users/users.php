@@ -1,7 +1,7 @@
 <?php
     include 'database.php';
 
-    $users = $conn->query("SELECT * FROM users WHERE role = 'Admin'");
+    $users = $conn->query("SELECT * FROM users WHERE role IN ('admin', 'staff')");
     $total_users = $users->num_rows;
 ?>
 
@@ -39,7 +39,7 @@
                         <p><b>Role:</b> <?php echo $user['role']; ?></p>
                     </div>
                     <div class="admin-actions">
-                        <a href="#?id=<?php echo $user['id']; ?>" class="edit-btn">Edit</a>
+                        <a href="javascript:void(0);" class="edit-btn" onclick="openEditModal(<?php echo $user['id']; ?>)">Edit</a>
                         <a href="deleteUsers.php?id=<?php echo $user['id']; ?>" class="delete-btn" onclick="return confirm('Are you sure?');">Delete</a>
                     </div>
                 </div>
@@ -73,8 +73,8 @@
                     <label for="role">Role:</label>
                     <select id="role" name="role" required>
                         <option value="" disabled selected>Select Role</option>
-                        <option value="Admin">Admin</option>
-                        <option value="Staff">Staff</option>
+                        <option value="admin">Admin</option>
+                        <option value="staff">Staff</option>
                     </select>
 
                     <button type="button" class="btn" onclick="submitAdmin()">Add User</button>
@@ -82,6 +82,40 @@
             </div>
         </div>
     </div>
+
+    <!-- Edit User Modal (Hidden by Default) -->
+    <div id="editUserModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeEditModal()">&times;</span>
+            <h2>Edit User</h2>
+            <form id="editUserForm" enctype="multipart/form-data">
+                <input type="hidden" id="editUserId" name="userId">
+                <label for="editFullname">Full Name:</label>
+                <input type="text" id="editFullname" name="fullname" required>
+                
+                <label for="editEmail">Email:</label>
+                <input type="email" id="editEmail" name="email" required>
+
+                <label for="editRole">Role:</label>
+                <select id="editRole" name="role" required>
+                    <option value="admin">Admin</option>
+                    <option value="staff">Staff</option>
+                </select>
+
+                <!-- Profile Image Preview -->
+                <label>Current Profile Image:</label>
+                <img id="editProfilePreview" src="default-avatar.png" alt="Profile Image" width="80" height="80">
+
+                <!-- Upload New Image -->
+                <label for="editProfileImage">Change Profile Image:</label>
+                <input type="file" id="editProfileImage" name="profile_image" accept="image/*">
+
+                <button type="button" class="btn" onclick="submitEditUser()">Save Changes</button>
+            </form>
+        </div>
+    </div>
+
+
 
     <script src="Users/userScript.js"></script>
 
