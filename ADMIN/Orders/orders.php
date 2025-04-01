@@ -28,7 +28,7 @@ $result = $conn->query($sql);
 
     <div class="container">
         <div class="header-order">
-        <h2>Total Orders <strong><?php echo $total_orders; ?></strong></h2>
+        <h2>Total Orders: <strong><?php echo $total_orders; ?></strong></h2>
             <div class="header-actions-order">
                 <div class="search-bar">
                     <input type="text" id="orderSearch" placeholder="Search Orders...">

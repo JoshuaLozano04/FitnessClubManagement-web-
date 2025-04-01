@@ -25,12 +25,23 @@ $totalRevenueRow = mysqli_fetch_assoc($totalRevenueResult);
 $totalRevenue = $totalRevenueRow['total_revenue'];
 
 // Fetch monthly revenue
+// Fetch monthly revenue from both tables
 $monthlyRevenueResult = mysqli_query($conn, "
     SELECT 
-        DATE_FORMAT(order_date, '%Y-%m') as month, 
-        SUM(price) as total_revenue 
-    FROM purchase_orders 
-    GROUP BY DATE_FORMAT(order_date, '%Y-%m')
+        DATE_FORMAT(transaction_date, '%Y-%m') as month, 
+        SUM(total_amount) as total_revenue
+    FROM (
+        SELECT 
+            order_date as transaction_date, 
+            price as total_amount 
+        FROM purchase_orders
+        UNION ALL
+        SELECT 
+            transaction_date, 
+            payment_amount as total_amount 
+        FROM membership_transaction
+    ) as combined_transactions
+    GROUP BY DATE_FORMAT(transaction_date, '%Y-%m')
     ORDER BY month ASC
 ");
 
