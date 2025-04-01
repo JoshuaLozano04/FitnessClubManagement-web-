@@ -217,10 +217,6 @@ $notificationCount = $unreadNotifications['unread_count'];
                                 </div>
                                 <i class="ri-arrow-down-s-line"></i>
                                 <div class="dropdown_list">
-                                    <a href ="#" class="dropdown_link">
-                                        <i class="ri-user-line"></i>
-                                        <span>Profile</span>
-                                    </a>
                                     <a href="#" class="dropdown_link" id="changePasswordLink">
                                         <i class="ri-lock-2-line"></i>
                                         <span>Change Password</span>
