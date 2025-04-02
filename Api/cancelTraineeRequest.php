@@ -20,7 +20,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         if ($result->num_rows > 0) {
             $row = $result->fetch_assoc();
-            $user_name = $row['trainer_name'];
+            $trainer_name = $row['trainer_name'];
             $user_email = $row['user_email'];
 
             // Create notification for the user

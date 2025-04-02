@@ -26,9 +26,8 @@ if ($method == "POST") {
     $fullname = $input["fullname"];
     $email = $input["email"];
     $password = password_hash($input['password'], PASSWORD_BCRYPT);
-    $role = $input['role'] ?? 'member';
 
-    $sql = "INSERT INTO users (fullname, email, password, role) VALUES ('$fullname', '$email', '$password', '$role')";
+    $sql = "INSERT INTO users (fullname, email, password) VALUES ('$fullname', '$email', '$password')";
 
     if ($conn->query($sql) === TRUE) {
         respond("User created successfully");

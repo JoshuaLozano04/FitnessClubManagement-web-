@@ -21,39 +21,35 @@ function respond($message, $status = 200) {
     exit();
 }
 
-### POST Method - Create Member ###
+### POST Method - Create User ###
 if ($method == "POST") {
-    if (empty($input["user_id"]) || empty($input["membership_start"]) || empty($input["membership_end"]) || empty($input["role"]) || empty($input["status"])) {
-        respond("User ID, membership start date, membership end date, role, and status are required", 400);
+    if (empty($input["fullname"]) || empty($input["email"]) || empty($input["password"])) {
+        respond("fullname, email, and password are required", 400);
     }
 
-    $user_id = $input["user_id"];
-    $membership_start = $input["membership_start"];
-    $membership_end = $input["membership_end"];
-    $role = $input["role"];
-    $status = $input["status"];
+    $fullname = trim($input["fullname"]);
+    $email = trim($input["email"]);
+    $password = password_hash(trim($input["password"]), PASSWORD_DEFAULT); // Hash password
 
-    // Check if the user_id already exists in the 'members' table
-    $sql = "SELECT id FROM members WHERE user_id = ?";
+    // Check if email already exists
+    $sql = "SELECT id FROM users WHERE email = ?";
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param("i", $user_id);
+    $stmt->bind_param("s", $email);
     $stmt->execute();
     $stmt->store_result();
 
-    // If a record exists, return an error response
     if ($stmt->num_rows > 0) {
-        respond("Error: This user already has an active membership", 400);
+        respond("Error: Email is already registered", 400);
     }
     $stmt->close();
 
-    // Proceed with creating the new member
-    $stmt = $conn->prepare("INSERT INTO members (user_id, membership_start, membership_end, role, status)
-                            VALUES (?, ?, ?, ?, ?)");
-    $stmt->bind_param("iss", $user_id, $membership_start, $membership_end, $role, $status);
+    // Insert the new user
+    $stmt = $conn->prepare("INSERT INTO users (fullname, email, password) VALUES (?, ?, ?)");
+    $stmt->bind_param("sss", $fullname, $email, $password);
 
     try {
         if ($stmt->execute()) {
-            respond("Member created successfully");
+            respond("User created successfully");
         } else {
             respond("Error: " . $stmt->error, 500);
         }
@@ -64,7 +60,6 @@ if ($method == "POST") {
 
     $stmt->close();
 }
-
 ### GET Method - Read Member(s) ###
 elseif ($method == "GET") {
     if (isset($_GET["id"])) {
