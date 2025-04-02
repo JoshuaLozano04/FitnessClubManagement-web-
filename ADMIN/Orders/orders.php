@@ -7,6 +7,15 @@ $total_orders_result = $conn->query($total_orders_query);
 $total_orders_row = $total_orders_result->fetch_assoc();
 $total_orders = $total_orders_row['total'];
 
+// Fetch products from inventory
+$product_query = "SELECT id, product_name, price FROM inventory"; // Ensure table name is correct
+$product_result = $conn->query($product_query);
+$products = [];
+
+while ($product_row = $product_result->fetch_assoc()) {
+    $products[] = $product_row;
+}
+
 // Delete order if delete parameter is set
 if (isset($_GET['delete'])) {
     $delete_id = intval($_GET['delete']);
@@ -80,35 +89,35 @@ $result = $conn->query($sql);
         <table>
             <thead>
                 <tr>
-                <th>Customer</th>
+                    <th>Customer</th>
                     <th>Order Date</th>
                     <th>Product</th>
                     <th>Price</th>
                     <th>Quantity</th>
-                    <th>Total Price</th> <!-- New column -->
+		    <th>Total Price</th>
                     <th>Status</th>
                     <th>Actions</th>
                 </tr>
             </thead>
-                <tbody>
-                    <?php while ($row = $result->fetch_assoc()) { 
-                        $total_price = $row['price'] * $row['quantity']; // Calculate total price
-                    ?>
-                    <tr>
-                        <td><?php echo $row['customer_name']; ?></td>
-                        <td><?php echo $row['order_date']; ?></td>
-                        <td><?php echo $row['product_name']; ?></td>
-                        <td>₱<?php echo number_format($row['price'], 2); ?></td>
-                        <td><?php echo $row['quantity']; ?></td>
-                        <td>₱<?php echo number_format($total_price, 2); ?></td> <!-- Display total price -->
-                        <td class="status <?php echo strtolower(str_replace(' ', '-', $row['status'])); ?>"><?php echo $row['status']; ?></td>
-                        <td>
-                            <a href="index.php?page=Orders/editOrder&edit=<?php echo $row['id']; ?>" class="edit-btn">Edit</a>
-                            <a href="index.php?page=Orders/editOrder&delete=<?php echo $row['id']; ?>" class="delete-btn" onclick="return confirm('Are you sure?')">Delete</a>
-                        </td>
-                    </tr>
-                    <?php } ?>
-                </tbody>
+            <tbody>
+                <?php while ($row = $result->fetch_assoc()) { 
+                        $total_price = $row['price'] * $row['quantity'];
+                ?>
+                <tr>
+                    <td><?php echo $row['customer_name']; ?></td>
+                    <td><?php echo $row['order_date']; ?></td>
+                    <td><?php echo $row['product_name']; ?></td>
+                    <td>₱<?php echo number_format($row['price'], 2); ?></td>
+                    <td><?php echo $row['quantity']; ?></td>
+		    <td>₱<?php echo number_format($total_price, 2); ?></td> <!-- Display total price -->
+                    <td class="status <?php echo strtolower(str_replace(' ', '-', $row['status'])); ?>"><?php echo $row['status']; ?></td>
+                    <td>
+                        <a href="index.php?page=Orders/editOrder&edit=<?php echo $row['id']; ?>" class="edit-btn">Edit</a>
+                        <a href="index.php?page=Orders/editOrder&delete=<?php echo $row['id']; ?>" class="delete-btn" onclick="return confirm('Are you sure?')">Delete</a>
+                    </td>
+                </tr>
+                <?php } ?>
+            </tbody>
         </table>
     </div>
 
@@ -116,16 +125,23 @@ $result = $conn->query($sql);
     <div id="orderForm" class="modal">
         <div class="modal-content">
             <button class="close-btn" onclick="closeModal()">&times;</button>
-            <form action="add_order.php" method="POST">
+            <form action="Orders/add_order.php" method="POST">
                 <h2>Add Purchase Order</h2>
                 <label for="customer_name">Customer Name:</label>
                 <input type="text" id="customer_name" name="customer_name" placeholder="Enter customer name" required>
                 <label for="order_date">Order Date:</label>
                 <input type="date" id="order_date" name="order_date" required>
-                <label for="product_name">Product Name:</label>
-                <input type="text" id="product_name" name="product_name" placeholder="Enter product name" required>
+                <label for="product_id">Product Name:</label>
+                <select id="product_id" name="product_id" required onchange="updatePrice()">
+                    <option value="" disabled selected>Select Product</option>
+                    <?php foreach ($products as $product) { ?>
+                        <option value="<?php echo $product['id']; ?>" data-price="<?php echo $product['price']; ?>">
+                            <?php echo $product['product_name']; ?>
+                        </option>
+                    <?php } ?>
+                </select>
                 <label for="price">Price:</label>
-                <input type="number" id="price" name="price" placeholder="Enter price" required>
+                <input type="number" id="price" name="price" placeholder="Enter price" required readonly>
                 <label for="quantity">Quantity:</label>
                 <input type="number" id="quantity" name="quantity" placeholder="Enter quantity" required>
                 <label for="status">Order Status:</label>
