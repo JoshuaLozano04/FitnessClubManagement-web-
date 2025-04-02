@@ -15,13 +15,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['login'])) {
         $user = mysqli_fetch_assoc($result);
         if (password_verify($password, $user['password'])) {
             if ($user['role'] == 'admin' || $user['role'] == 'staff') { 
-                // ✅ Store User ID in Session
                 $_SESSION["user_id"] = $user["id"];
                 $_SESSION['fullname'] = $user['fullname'];
                 $_SESSION['role'] = $user['role'];
 
-                error_log("Login successful. User ID: " . $_SESSION["user_id"]); // Debugging
-
+                error_log("Login successful. User ID: " . $_SESSION["user_id"]);
                 header("Location: index.php");
                 exit();
             } else {
@@ -86,12 +84,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['login'])) {
                     </div>
                 </div>
                 <div class="content">
-                    <div class="checkbox">
-                        <input type="checkbox" id="remember-me">
-                        <label for="remember-me">Remember Me</label>
-                    </div>
                     <div class="pass-link">
-                        <a href="#">Forgot password?</a>
+                        <a href="forgot_password.php">Forgot password?</a>
                     </div>
                 </div>
                 <button type="submit" name="login">Login</button>
