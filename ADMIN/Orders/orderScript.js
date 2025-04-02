@@ -65,3 +65,17 @@ function updatePrice() {
         priceInput.value = "";
     }
 }
+
+
+// Update price when product is selected
+function updatePrice() {
+    let productSelect = document.getElementById("product_id");
+    let selectedOption = productSelect.options[productSelect.selectedIndex];
+    let priceInput = document.getElementById("price");
+
+    if (selectedOption.value !== "") {
+        priceInput.value = selectedOption.getAttribute("data-price");
+    } else {
+        priceInput.value = "";
+    }
+}
