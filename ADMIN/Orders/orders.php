@@ -7,6 +7,20 @@ $total_orders_result = $conn->query($total_orders_query);
 $total_orders_row = $total_orders_result->fetch_assoc();
 $total_orders = $total_orders_row['total'];
 
+// Delete order if delete parameter is set
+if (isset($_GET['delete'])) {
+    $delete_id = intval($_GET['delete']);
+    $deleteQuery = $conn->prepare("DELETE FROM purchase_orders WHERE id = ?");
+    $deleteQuery->bind_param("i", $delete_id);
+
+    if ($deleteQuery->execute()) {
+        header("Location: orders.php?success=Order deleted successfully");
+        exit;
+    } else {
+        echo "Error deleting order.";
+    }
+}
+
 // Fetch orders from the database
 $sql = "SELECT * FROM purchase_orders ORDER BY order_date DESC";
 $result = $conn->query($sql);
@@ -28,7 +42,7 @@ $result = $conn->query($sql);
 
     <div class="container">
         <div class="header-order">
-        <h2>Total Orders: <strong><?php echo $total_orders; ?></strong></h2>
+            <h2>Total Orders: <strong><?php echo $total_orders; ?></strong></h2>
             <div class="header-actions-order">
                 <div class="search-bar">
                     <input type="text" id="orderSearch" placeholder="Search Orders...">
@@ -46,6 +60,7 @@ $result = $conn->query($sql);
                     <th>Price</th>
                     <th>Quantity</th>
                     <th>Status</th>
+                    <th>Actions</th>
                 </tr>
             </thead>
             <tbody>
@@ -57,6 +72,10 @@ $result = $conn->query($sql);
                     <td>₱<?php echo number_format($row['price'], 2); ?></td>
                     <td><?php echo $row['quantity']; ?></td>
                     <td class="status <?php echo strtolower(str_replace(' ', '-', $row['status'])); ?>"><?php echo $row['status']; ?></td>
+                    <td>
+                        <a href="editOrder.php?edit=<?php echo $row['id']; ?>" class="edit-btn">Edit</a>
+                        <a href="orders.php?delete=<?php echo $row['id']; ?>" class="delete-btn" onclick="return confirm('Are you sure you want to delete this order?')">Delete</a>
+                    </td>
                 </tr>
                 <?php } ?>
             </tbody>
