@@ -4,7 +4,14 @@ function openModal() {
     }
 function closeModal() {
     document.getElementById('orderForm').style.display = 'none';
+    resetForm(); // Clear form data when closing
 }
+
+function resetForm() {
+    let form = document.querySelector("#orderForm form");
+    form.reset(); // Resets all input fields to their default values
+}
+
 
 // Search Filter for Orders
 document.addEventListener("DOMContentLoaded", function () {
@@ -45,3 +52,17 @@ function filterOrders() {
         }
     }
 }
+
+// Update price when product is selected
+function updatePrice() {
+    let productSelect = document.getElementById("product_id");
+    let selectedOption = productSelect.options[productSelect.selectedIndex];
+    let priceInput = document.getElementById("price");
+
+    if (selectedOption.value !== "") {
+        priceInput.value = selectedOption.getAttribute("data-price");
+    } else {
+        priceInput.value = "";
+    }
+}
+
