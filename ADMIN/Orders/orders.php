@@ -19,6 +19,32 @@ while ($product_row = $product_result->fetch_assoc()) {
 // Fetch orders from the database
 $sql = "SELECT * FROM purchase_orders ORDER BY order_date DESC";
 $result = $conn->query($sql);
+
+// but oCheck if status is "Ready for Pickup" and send notification
+while ($row = $result->fetch_assoc()) {
+    if ($row['status'] === "Ready for Pickup") {
+        $order_id = $row['id'];
+        $product_name = $row['product_name'];
+        $user_email = $row['user_email']; // Assuming this column exists in the database
+        $status = $row['status'];
+
+        // Prepare the notification message
+        $notification_message = "Your $product_name is now $status";
+
+        // Insert notification into the notification table
+        $notificationQuery = $conn->prepare("INSERT INTO notification (email, message) VALUES (?, ?)");
+        $notificationQuery->bind_param("ss", $user_email, $notification_message);
+
+
+        if (!$notificationQuery->execute()) {
+            echo "Error sending notification for order ID: $order_id";
+        }
+    }
+}
+
+// Fetch orders from the database
+$sql = "SELECT * FROM purchase_orders ORDER BY order_date DESC";
+$result = $conn->query($sql);
 ?>
 
 <!DOCTYPE html>
@@ -27,7 +53,7 @@ $result = $conn->query($sql);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Purchase Orders</title>
-    <link rel="stylesheet" href="Orders/orderStyles.css">
+    <link rel="stylesheet" href="orders/orderStyles.css">
 </head>
 <body>
     <div class="title">
@@ -49,11 +75,12 @@ $result = $conn->query($sql);
         <table>
             <thead>
                 <tr>
-                    <th>Customer</th>
+                <th>Customer</th>
                     <th>Order Date</th>
                     <th>Product</th>
                     <th>Price</th>
                     <th>Quantity</th>
+                    <th>Total Price</th> <!-- New column -->
                     <th>Status</th>
                     <th>Actions</th>
                 </tr>
@@ -69,7 +96,7 @@ $result = $conn->query($sql);
                     <td class="status <?php echo strtolower(str_replace(' ', '-', $row['status'])); ?>"><?php echo $row['status']; ?></td>
                     <td>
                         <a href="index.php?page=Orders/editOrder&edit=<?php echo $row['id']; ?>" class="edit-btn">Edit</a>
-                        <a href="index.php?page=Orders/orders&delete=<?php echo $row['id']; ?>" class="delete-btn" onclick="return confirm('Are you sure?')">Delete</a>
+                        <a href="index.php?page=Orders/editOrder&delete=<?php echo $row['id']; ?>" class="delete-btn" onclick="return confirm('Are you sure?')">Delete</a>
                     </td>
                 </tr>
                 <?php } ?>
