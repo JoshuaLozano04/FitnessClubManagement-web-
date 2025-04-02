@@ -41,7 +41,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['update_order'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Edit Order</title>
-    <link rel="stylesheet" href="Orders/orderStyles.css">
+    <link rel="stylesheet" href="orders/orderStyles.css">
 </head>
 <body>
     <div class="order-form">
