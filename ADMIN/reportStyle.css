@@ -90,3 +90,8 @@
 .recent-reviews small {
     color: #777;
 }
+.user-name {
+    text-align: center; /* Centers the text horizontally */
+    font-weight: bold; /* Makes the user_name bold */
+    margin: 10px 0; /* Adds some spacing above and below */
+}

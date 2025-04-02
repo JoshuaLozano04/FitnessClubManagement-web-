@@ -11,9 +11,9 @@ $averageRatingResult = mysqli_query($conn, "SELECT AVG(rating) as average_rating
 $averageRatingRow = mysqli_fetch_assoc($averageRatingResult);
 $averageRating = round($averageRatingRow['average_rating'] ?? 0, 1);
 
-// Fetch recent reviews
+// Fetch recent reviews with trainer names
 $recentReviewsResult = mysqli_query($conn, "
-    SELECT user_name, rating, comment, created_at 
+    SELECT trainer_name, user_name, rating, comment, created_at 
     FROM trainer_review 
     ORDER BY created_at DESC 
     LIMIT 5
@@ -62,7 +62,7 @@ $recentReviewsResult = mysqli_query($conn, "
                     <div class="reviewer-info">
                         <img src="img/user.png" alt="Reviewer Image">
                         <div>
-                            <h4><?php echo htmlspecialchars($review['user_name']); ?></h4>
+                            <h4><strong>Trainer:</strong> <?php echo htmlspecialchars($review['trainer_name']); ?></h4>
                             <p>
                                 <?php
                                 // Display stars for each review
@@ -73,9 +73,14 @@ $recentReviewsResult = mysqli_query($conn, "
                             </p>
                         </div>
                     </div>
-                    <p><?php echo htmlspecialchars($review['comment']); ?></p>
                     <small><?php echo htmlspecialchars($review['created_at']); ?></small>
                 </li>
+               
+                <li>
+                    <p><strong>Comment:</strong> <?php echo htmlspecialchars($review['comment']); ?></p>
+                    <p><strong>From:</strong> <?php echo htmlspecialchars($review['user_name']); ?></p>
+                </li>
+                <li class="divider"></li>
                 <?php endwhile; ?>
             </ul>
         </div>
