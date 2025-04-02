@@ -175,6 +175,7 @@ $notificationCount = $unreadNotifications['unread_count'];
                         'Attendance/attendance' => 'Attendance',
                         'report' => 'Review',
                         'Orders/orders' => 'Orders',
+                        'Orders/editOrder' => 'Edit Order',
                         'Inventory/inventory' => 'Inventory',
                         'Inventory/editInventory' => 'Edit Inventory',
                         'Users/users' => 'User Account'
@@ -267,7 +268,7 @@ $notificationCount = $unreadNotifications['unread_count'];
         </div>
 
         <?php
-        $allowed_pages = ['dashboard', 'Members/members', 'Members/editMembers', 'Schedule/schedule', "Schedule/manageRequest",'Attendance/attendance', 'report', 'Inventory/inventory', 'Inventory/editInventory', 'Orders/orders', 'Users/users'];
+        $allowed_pages = ['dashboard', 'Members/members', 'Members/editMembers', 'Schedule/schedule', "Schedule/manageRequest",'Attendance/attendance', 'report', 'Inventory/inventory', 'Inventory/editInventory', 'Orders/orders', 'Orders/editOrder', 'Users/users'];
         $page = $_GET['page'] ?? 'dashboard';
         if (in_array($page, $allowed_pages)) {
             include "$page.php";
