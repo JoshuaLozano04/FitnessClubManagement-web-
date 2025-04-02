@@ -94,7 +94,7 @@ $result = $conn->query($sql);
                     <th>Product</th>
                     <th>Price</th>
                     <th>Quantity</th>
-		    <th>Total Price</th>
+		            <th>Total Price</th>
                     <th>Status</th>
                     <th>Actions</th>
                 </tr>
@@ -109,7 +109,7 @@ $result = $conn->query($sql);
                     <td><?php echo $row['product_name']; ?></td>
                     <td>₱<?php echo number_format($row['price'], 2); ?></td>
                     <td><?php echo $row['quantity']; ?></td>
-		    <td>₱<?php echo number_format($total_price, 2); ?></td> <!-- Display total price -->
+		            <td>₱<?php echo number_format($total_price, 2); ?></td> <!-- Display total price -->
                     <td class="status <?php echo strtolower(str_replace(' ', '-', $row['status'])); ?>"><?php echo $row['status']; ?></td>
                     <td>
                         <a href="index.php?page=Orders/editOrder&edit=<?php echo $row['id']; ?>" class="edit-btn">Edit</a>
