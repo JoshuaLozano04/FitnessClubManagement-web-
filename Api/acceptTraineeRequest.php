@@ -25,28 +25,38 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $start_time = $row['time_start'];
             $end_time = $row['time_end'];
 
-            $updateQuery = $conn->prepare("UPDATE trainer_request SET status = ? WHERE request_id = ?");
-            $updateQuery->bind_param("si", $status, $request_id);
-            
-            if ($updateQuery->execute()) {
-                $insertQuery = $conn->prepare("INSERT INTO trainer_assignments (request_id, user_email, user_name, trainer_email, trainer_name, assignment_date, status, start_time, end_time) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
-                $insertQuery->bind_param("issssssss", $request_id, $user_email, $user_name, $trainer_email, $trainer_name, $assignment_date, $status, $start_time, $end_time);
+            // Create notification for the user
+            $notification_message = "Your training request has been accepted by " . $trainer_name . ".";
+            $stmt = $conn->prepare("INSERT INTO notification (email, message) VALUES (?, ?)");
+            $stmt->bind_param("ss", $user_email, $notification_message);
+
+            if ($stmt->execute()) {
+                $updateQuery = $conn->prepare("UPDATE trainer_request SET status = ? WHERE request_id = ?");
+                $updateQuery->bind_param("si", $status, $request_id);
                 
-                if ($insertQuery->execute()) {
-                    echo json_encode([
-                        "status" => "success",
-                        "message" => "Trainer request approved and assigned successfully.",
-                        "request_id" => $request_id,
-                        "new_status" => $status
-                    ]);
+                if ($updateQuery->execute()) {
+                    $insertQuery = $conn->prepare("INSERT INTO trainer_assignments (request_id, user_email, user_name, trainer_email, trainer_name, assignment_date, status, start_time, end_time) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
+                    $insertQuery->bind_param("issssssss", $request_id, $user_email, $user_name, $trainer_email, $trainer_name, $assignment_date, $status, $start_time, $end_time);
+                    
+                    if ($insertQuery->execute()) {
+                        echo json_encode([
+                            "status" => "success",
+                            "message" => "Trainer request approved, assigned, and notification sent successfully.",
+                            "request_id" => $request_id,
+                            "new_status" => $status
+                        ]);
+                    } else {
+                        echo json_encode(["status" => "error", "message" => "Failed to insert into trainer_assignment."]);
+                    }
+                    $insertQuery->close();
                 } else {
-                    echo json_encode(["status" => "error", "message" => "Failed to insert into trainer_assignment."]);
+                    echo json_encode(["status" => "error", "message" => "Failed to update trainer request status."]);
                 }
-                $insertQuery->close();
+                $updateQuery->close();
             } else {
-                echo json_encode(["status" => "error", "message" => "Failed to update trainer request status."]);
+                echo json_encode(["status" => "error", "message" => "Failed to create notification."]);
             }
-            $updateQuery->close();
+            $stmt->close();
         } else {
             echo json_encode(["status" => "error", "message" => "Trainer request not found."]);
         }

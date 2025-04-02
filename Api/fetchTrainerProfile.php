@@ -8,7 +8,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         $email = $_GET['email'];
 
         // Fetch user data from the users table
-        $userQuery = "SELECT fullname, email, role, profile_picture FROM users WHERE email = ? AND role = 'trainer'";
+        $userQuery = "SELECT u.fullname, u.email, u.role, u.profile_picture, COALESCE(AVG(tr.rating), 0) as total_ratings 
+                      FROM users u 
+                      LEFT JOIN trainer_review tr ON u.email = tr.trainer_email 
+                      WHERE u.email = ? AND u.role = 'trainer'
+                      GROUP BY u.email, u.fullname, u.role, u.profile_picture";
         $stmt = $conn->prepare($userQuery);
         $stmt->bind_param("s", $email);
         $stmt->execute();
@@ -31,6 +35,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
             // Clean up the profile_picture value
             $profilePicture = isset($userData['profile_picture']) ? trim($userData['profile_picture']) : null;
 
+            // Round the rating to 1 decimal place
+            $totalRatings = round($userData['total_ratings'], 1);
+
             // Return a flat response
             echo json_encode([
                 "status" => "success",
@@ -39,7 +46,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
                 "email" => $userData['email'],
                 "role" => $userData['role'],
                 "profile_picture" => $profilePicture,
-                "about" => $aboutText
+                "about" => $aboutText,
+                "total_ratings" => $totalRatings
             ]);
         } else {
             echo json_encode([
@@ -49,10 +57,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         }
     } else {
         // Fetch all trainer profiles
-        $userQuery = "SELECT u.fullname, u.email, u.role, u.profile_picture, ta.about 
+        $userQuery = "SELECT u.fullname, u.email, u.role, u.profile_picture, ta.about, COALESCE(AVG(tr.rating), 0) as total_ratings 
                       FROM users u 
                       LEFT JOIN trainers_about ta ON u.email = ta.email
-                      WHERE u.role = 'trainer'";
+                      LEFT JOIN trainer_review tr ON u.email = tr.trainer_email
+                      WHERE u.role = 'trainer'
+                      GROUP BY u.email, u.fullname, u.role, u.profile_picture, ta.about";
         $result = $conn->query($userQuery);
 
         $profiles = [];
@@ -62,7 +72,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
                 "email" => $row['email'],
                 "role" => $row['role'],
                 "profile_picture" => isset($row['profile_picture']) ? trim($row['profile_picture']) : null,
-                "about" => $row['about'] ?? "Update your about info"
+                "about" => $row['about'] ?? "Update your about info",
+                "total_ratings" => round($row['total_ratings'], 1)
             ];
         }
 

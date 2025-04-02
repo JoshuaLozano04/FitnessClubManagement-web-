@@ -6,26 +6,44 @@ use PHPMailer\PHPMailer\Exception;
 
 require __DIR__ . '/../vendor/autoload.php';
 
-function sendEmail($to, $subject, $body) {
+function sendEmail($to, $subject, $body, $code) {
     $mail = new PHPMailer(true);
 
     try {
         $mail->isSMTP();
-        $mail->Host = 'smtp.gmail.com'; // Set the SMTP server to send through
+        $mail->Host = 'smtp.gmail.com';
         $mail->SMTPAuth = true;
-        $mail->Username = 'pumpitjonathan66@gmail.com'; // SMTP username
-        $mail->Password = 'trfu rtge spnl owuo'; // SMTP password (app-specific password)
+        $mail->Username = 'pumpitjonathan66@gmail.com';
+        $mail->Password = 'trfu rtge spnl owuo'; // Use an App Password instead of your main password
         $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
         $mail->Port = 587;
 
-        //Recipients~
-        $mail->setFrom('your_email@gmail.com', 'Pumping Iron Gym');
+        // Email Priority
+        $mail->Priority = 1;
+        $mail->addCustomHeader("X-Priority: 1");
+        $mail->addCustomHeader("X-MSMail-Priority: High");
+        $mail->addCustomHeader("Importance: High");
+
+        // Sender Info
+        $mail->setFrom('pumpitjonathan66@gmail.com', 'Pumping Iron Gym');
         $mail->addAddress($to);
 
-        // Content
+        // Email Content
         $mail->isHTML(true);
-        $mail->Subject = $subject;
-        $mail->Body    = $body;
+        $mail->Subject = "Your Confirmation Code is $code";
+        $mail->Body = "
+            <p><strong>Your confirmation code:</strong> <span style='font-size:18px; color:red;'>$code</span></p>
+            <p><strong>Tip:</strong> Move this email to your 'Primary' inbox to avoid missing important updates.</p>
+            <br>
+            <p>Best regards,</p>
+            <p>Pumping Iron Gym Team</p>
+        ";
+
+        // Include a plain-text version (helps avoid spam filters)
+        $mail->AltBody = "Your confirmation code is: $code. Please use this to complete your registration.";
+
+        // Add a reply-to address (helps with legitimacy)
+        $mail->addReplyTo('pumpitjonathan66@gmail.com', 'Pumping Iron Gym');
 
         $mail->send();
         return true;
@@ -33,6 +51,8 @@ function sendEmail($to, $subject, $body) {
         return "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
     }
 }
+
+
 
 $method = $_SERVER['REQUEST_METHOD'];
 $contentType = isset($_SERVER["CONTENT_TYPE"]) ? trim($_SERVER["CONTENT_TYPE"]) : '';
@@ -68,7 +88,7 @@ if ($method === "POST") {
     $subject = 'Your Confirmation Code';
     $body = "Your confirmation code is: $code";
 
-    $emailResult = sendEmail($email, $subject, $body);
+    $emailResult = sendEmail($email, $subject, $body, $code );
 
     if ($emailResult === true) {
         $stmt = $conn->prepare("INSERT INTO email_confirmation (email, code) VALUES (?, ?)");

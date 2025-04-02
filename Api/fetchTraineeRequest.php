@@ -17,7 +17,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         $result = $stmt->get_result();
 
         if ($result->num_rows > 0) {
-            $request = $result->fetch_assoc(); // Fetch the single request
+            $request = $result->fetch_assoc(); 
+            $training_date = $request['date_of_training'];
+            $training_end_time = $request['time_end'];
+            $training_end_timestamp = strtotime($training_date . ' ' . $training_end_time);
+            $current_time = time();
+            
+            if ($training_end_timestamp < $current_time) {
+                $request['status'] = 'completed';
+            }
+            
             echo json_encode([
                 "status" => "success",
                 "message" => "Trainer request fetched successfully.",
@@ -48,6 +57,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         if ($result->num_rows > 0) {
             $requests = [];
             while ($row = $result->fetch_assoc()) {
+                // Check if training has passed for each request
+                $training_date = $row['date_of_training'];
+                $training_end_time = $row['time_end'];
+                $training_end_timestamp = strtotime($training_date . ' ' . $training_end_time);
+                $current_time = time();
+                
+                if ($training_end_timestamp < $current_time) {
+                    $row['status'] = 'completed';
+                }
+                
                 $requests[] = $row;
             }
             echo json_encode([

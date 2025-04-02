@@ -81,11 +81,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Execute the statement
         if ($stmt->execute()) {
             $request_id = $stmt->insert_id; // Get the ID of the newly created request
-            echo json_encode([
-                "status" => "success",
-                "message" => "Trainer request added successfully.",
-                "request_id" => $request_id
-            ]);
+
+            // Create notification for the trainer
+            $notification_message = $user_name . " has requested a training session";
+            $notifyStmt = $conn->prepare("INSERT INTO notification (email, message) VALUES (?, ?)");
+            $notifyStmt->bind_param("ss", $trainer_email, $notification_message);
+
+            if ($notifyStmt->execute()) {
+                echo json_encode([
+                    "status" => "success",
+                    "message" => "Trainer request added and notification sent successfully.",
+                    "request_id" => $request_id
+                ]);
+            } else {
+                echo json_encode([
+                    "status" => "success",
+                    "message" => "Trainer request added but failed to send notification.",
+                    "request_id" => $request_id
+                ]);
+            }
+            $notifyStmt->close();
         } else {
             echo json_encode(["status" => "error", "message" => "Error: " . $stmt->error]);
         }

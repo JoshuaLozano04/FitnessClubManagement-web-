@@ -7,32 +7,28 @@ function respond($message, $status = 200) {
     exit();
 }
 
-$method = $_SERVER['REQUEST_METHOD'];
-$contentType = isset($_SERVER["CONTENT_TYPE"]) ? trim($_SERVER["CONTENT_TYPE"]) : '';
-
-if ($method !== 'POST') {
+if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     respond(["message" => "Invalid request method"], 405);
 }
 
-if ($contentType === "application/json") {
-    $input = json_decode(file_get_contents('php://input'), true);
-} elseif ($contentType === "application/x-www-form-urlencoded" || $contentType === "multipart/form-data") {
-    $input = $_POST;
-} else {
-    parse_str(file_get_contents('php://input'), $input);
-}
-
-if (empty($input["email"])) {
+// Read the form-urlencoded data directly from $_POST
+if (empty($_POST["email"])) {
     respond(["message" => "Email is required"], 400);
 }
 
-$email = $input["email"];
+$email = $_POST["email"];
 
-$sql = "UPDATE users SET token=NULL WHERE email='$email'";
+// Use prepared statements to prevent SQL injection
+$sql = "UPDATE users SET token=NULL WHERE email=?";
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("s", $email);
 
-if ($conn->query($sql) === TRUE) {
+if ($stmt->execute()) {
     respond(["message" => "Logout successful"]);
 } else {
-    respond(["message" => "Error: " . $conn->error], 500);
+    respond(["message" => "Error: " . $stmt->error], 500);
 }
+
+$stmt->close();
+$conn->close();
 ?>
