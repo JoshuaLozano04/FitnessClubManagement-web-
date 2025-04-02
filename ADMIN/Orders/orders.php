@@ -73,8 +73,8 @@ $result = $conn->query($sql);
                     <td><?php echo $row['quantity']; ?></td>
                     <td class="status <?php echo strtolower(str_replace(' ', '-', $row['status'])); ?>"><?php echo $row['status']; ?></td>
                     <td>
-                        <a href="editOrder.php?edit=<?php echo $row['id']; ?>" class="edit-btn">Edit</a>
-                        <a href="orders.php?delete=<?php echo $row['id']; ?>" class="delete-btn" onclick="return confirm('Are you sure you want to delete this order?')">Delete</a>
+                        <a href="index.php?page=Orders/editOrder&edit=<?php echo $row['id']; ?>" class="edit-btn">Edit</a>
+                        <a href="index.php?page=Orders/editOrder&delete=<?php echo $row['id']; ?>" class="delete-btn" onclick="return confirm('Are you sure?')">Delete</a>
                     </td>
                 </tr>
                 <?php } ?>

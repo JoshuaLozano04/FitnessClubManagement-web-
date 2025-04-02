@@ -183,3 +183,118 @@ label {
 .add-order-button:hover {
     background: #0056b3;
 }
+
+/* Order Form Styles */
+.order-form {
+    background: rgb(255, 255, 255);
+    max-width: 500px;
+    margin: 20px auto;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 90%;
+}
+
+.order-form h2 {
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+.order-form input, 
+.order-form textarea,
+.order-form select { 
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    transition: border-color 0.3s ease-in-out;
+}
+
+.order-form input:focus,
+.order-form textarea:focus,
+.order-form select:focus {
+    border-color: #1096ea;
+    outline: none;
+    box-shadow: 0 0 5px rgba(16, 150, 234, 0.5);
+}
+
+.order-form button[type="submit"] {
+    width: 100%;
+    padding: 10px;
+    background: #28a745;
+    border: none;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background 0.3s ease-in-out;
+    margin-bottom: 10px;
+}
+
+.order-form button[type="submit"]:hover {
+    background: #218838;
+}
+
+.order-form button[type="button"] {
+    width: 100%;
+    padding: 10px;
+    background: #e74c3c;
+    border: none;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background 0.3s ease-in-out;
+}
+
+/* Cancel Button Hover Effect */
+.order-form button[type="button"]:hover {
+    background: #c0392b;
+}
+
+/* Responsive Design */
+@media (max-width: 600px) {
+    .order-form {
+        width: 100%;
+        padding: 15px;
+    }
+}
+
+.order-form form {
+    gap: 10px;
+    background: #f8f9fa;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+}
+
+
+/* Delete & Edit Buttons */
+td a {
+    text-decoration: none;
+    padding: 8px 12px;
+    border-radius: 5px;
+    font-size: 14px;
+    display: inline-block;
+    margin: 2px;
+    transition: 0.3s;
+}
+
+.edit-btn {
+    background: #ffc107;
+    color: #333;
+}
+.edit-btn:hover {
+    background: #e0a800;
+}
+
+.delete-btn {
+    background: #dc3545;
+    color: white;
+}
+.delete-btn:hover {
+    background: #c82333;
+}   
