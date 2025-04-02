@@ -155,22 +155,6 @@ td a:hover {
     background: #c82333;
 }
 
-.edit-btn {
-    background: #ffc107;
-}
-
-.edit-btn:hover {
-    background: #e0a800;
-}
-
-.delete-btn {
-    background: #dc3545;
-}
-
-.delete-btn:hover {
-    background: #c82333;
-}
-
 /* Add Product Button */
 .add-btn {
     text-decoration: none;
