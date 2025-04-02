@@ -24,7 +24,6 @@ $totalRevenueResult = mysqli_query($conn, "SELECT SUM(price) as total_revenue FR
 $totalRevenueRow = mysqli_fetch_assoc($totalRevenueResult);
 $totalRevenue = $totalRevenueRow['total_revenue'];
 
-// Fetch monthly revenue
 // Fetch monthly revenue from both tables
 $monthlyRevenueResult = mysqli_query($conn, "
     SELECT 
@@ -33,7 +32,7 @@ $monthlyRevenueResult = mysqli_query($conn, "
     FROM (
         SELECT 
             order_date as transaction_date, 
-            price as total_amount 
+            (price * quantity) as total_amount 
         FROM purchase_orders
         UNION ALL
         SELECT 
@@ -57,6 +56,7 @@ foreach ($monthlyRevenueData as $data) {
     $months[] = $data['month'];
     $revenues[] = $data['total_revenue'];
 }
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
