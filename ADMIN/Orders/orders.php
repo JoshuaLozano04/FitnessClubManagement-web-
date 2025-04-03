@@ -93,6 +93,9 @@ $result = $conn->query($sql);
                     <td><?php echo $row['product_name']; ?></td>
                     <td>₱<?php echo number_format($row['price'], 2); ?></td>
                     <td><?php echo $row['quantity']; ?></td>
+                    <td>
+                        ₱<?php echo number_format($row['price'] * $row['quantity'], 2); ?>
+                    </td>
                     <td class="status <?php echo strtolower(str_replace(' ', '-', $row['status'])); ?>"><?php echo $row['status']; ?></td>
                     <td>
                         <a href="index.php?page=Orders/editOrder&edit=<?php echo $row['id']; ?>" class="edit-btn">Edit</a>

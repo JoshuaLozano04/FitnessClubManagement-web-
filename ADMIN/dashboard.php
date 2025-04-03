@@ -19,8 +19,20 @@ $orderCountResult = mysqli_query($conn, "SELECT COUNT(*) as order_count FROM pur
 $orderCountRow = mysqli_fetch_assoc($orderCountResult);
 $orderCount = $orderCountRow['order_count'];
 
-// Fetch the total revenue
-$totalRevenueResult = mysqli_query($conn, "SELECT SUM(price) as total_revenue FROM purchase_orders");
+// Fetch the total revenue (including membership fees and orders with price * quantity)
+$totalRevenueResult = mysqli_query($conn, "
+    SELECT 
+        SUM(total_amount) as total_revenue
+    FROM (
+        SELECT 
+            (price * quantity) as total_amount 
+        FROM purchase_orders
+        UNION ALL
+        SELECT 
+            payment_amount as total_amount 
+        FROM membership_transaction
+    ) as combined_revenue
+");
 $totalRevenueRow = mysqli_fetch_assoc($totalRevenueResult);
 $totalRevenue = $totalRevenueRow['total_revenue'];
 
