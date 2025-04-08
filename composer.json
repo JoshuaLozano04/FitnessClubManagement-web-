@@ -4,6 +4,6 @@
         "league/oauth2-client": "^2.8",
         "sendgrid/sendgrid": "^8.1",
         "ralouphie/getallheaders": "^3.0",
-        "stripe/stripe-php": "^16.6"
+        "stripe/stripe-php": "^17.1"
     }
 }

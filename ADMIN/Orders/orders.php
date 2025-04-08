@@ -1,45 +1,44 @@
 <?php
 include 'database.php';
 
+// Check if the connection is valid
+if (!$conn) {
+    die("Connection failed: " . mysqli_connect_error());
+}
+
 // Fetch total number of orders
 $total_orders_query = "SELECT COUNT(*) AS total FROM purchase_orders";
 $total_orders_result = $conn->query($total_orders_query);
 $total_orders_row = $total_orders_result->fetch_assoc();
 $total_orders = $total_orders_row['total'];
 
-// Fetch products from inventory
-$product_query = "SELECT id, product_name, price FROM inventory"; // Ensure table name is correct
-$product_result = $conn->query($product_query);
-$products = [];
+// Delete order if delete parameter is set
+if (isset($_GET['delete'])) {
+    $delete_id = intval($_GET['delete']); // Sanitize input
+    if ($delete_id > 0) { // Validate input
+        $deleteQuery = $conn->prepare("DELETE FROM purchase_orders WHERE id = ?");
+        $deleteQuery->bind_param("i", $delete_id);
 
-while ($product_row = $product_result->fetch_assoc()) {
-    $products[] = $product_row;
+        if ($deleteQuery->execute()) {
+            header("Location: orders.php?success=Order deleted successfully");
+            exit;
+        } else {
+            header("Location: orders.php?error=Error deleting order");
+            exit;
+        }
+        $deleteQuery->close();
+    } else {
+        header("Location: orders.php?error=Invalid order ID");
+        exit;
+    }
 }
 
-// Fetch orders from the database
-$sql = "SELECT * FROM purchase_orders ORDER BY order_date DESC";
-$result = $conn->query($sql);
-
-// but oCheck if status is "Ready for Pickup" and send notification
-while ($row = $result->fetch_assoc()) {
-    if ($row['status'] === "Ready for Pickup") {
-        $order_id = $row['id'];
-        $product_name = $row['product_name'];
-        $user_email = $row['user_email']; // Assuming this column exists in the database
-        $status = $row['status'];
-
-        // Prepare the notification message
-        $notification_message = "Your $product_name is now $status";
-
-        // Insert notification into the notification table
-        $notificationQuery = $conn->prepare("INSERT INTO notification (email, message) VALUES (?, ?)");
-        $notificationQuery->bind_param("ss", $user_email, $notification_message);
-
-
-        if (!$notificationQuery->execute()) {
-            echo "Error sending notification for order ID: $order_id";
-        }
-    }
+// Fetch products from inventory
+$product_query = "SELECT id, product_name, price FROM inventory";
+$product_result = $conn->query($product_query);
+$products = [];
+while ($product_row = $product_result->fetch_assoc()) {
+    $products[] = $product_row;
 }
 
 // Fetch orders from the database
@@ -53,7 +52,7 @@ $result = $conn->query($sql);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Purchase Orders</title>
-    <link rel="stylesheet" href="orders/orderStyles.css">
+    <link rel="stylesheet" href="Orders/orderStyles.css">
 </head>
 <body>
     <div class="title">
@@ -75,12 +74,11 @@ $result = $conn->query($sql);
         <table>
             <thead>
                 <tr>
-                <th>Customer</th>
+                    <th>Customer</th>
                     <th>Order Date</th>
                     <th>Product</th>
                     <th>Price</th>
                     <th>Quantity</th>
-                    <th>Total Price</th> <!-- New column -->
                     <th>Status</th>
                     <th>Actions</th>
                 </tr>
@@ -93,13 +91,10 @@ $result = $conn->query($sql);
                     <td><?php echo $row['product_name']; ?></td>
                     <td>₱<?php echo number_format($row['price'], 2); ?></td>
                     <td><?php echo $row['quantity']; ?></td>
-                    <td>
-                        ₱<?php echo number_format($row['price'] * $row['quantity'], 2); ?>
-                    </td>
                     <td class="status <?php echo strtolower(str_replace(' ', '-', $row['status'])); ?>"><?php echo $row['status']; ?></td>
                     <td>
                         <a href="index.php?page=Orders/editOrder&edit=<?php echo $row['id']; ?>" class="edit-btn">Edit</a>
-                        <a href="index.php?page=Orders/editOrder&delete=<?php echo $row['id']; ?>" class="delete-btn" onclick="return confirm('Are you sure?')">Delete</a>
+                        <a href="Orders/delete.php?id=<?php echo $row['id']; ?>" class="delete-btn" onclick="return confirm('Are you sure you want to delete this order?')">Delete</a>
                     </td>
                 </tr>
                 <?php } ?>
@@ -143,6 +138,22 @@ $result = $conn->query($sql);
             </form>
         </div>
     </div>
+    <script>
+        function updatePrice() {
+            const productSelect = document.getElementById('product_id');
+            const selectedOption = productSelect.options[productSelect.selectedIndex];
+            const price = selectedOption.getAttribute('data-price');
+            document.getElementById('price').value = price;
+        }
+
+        function openModal() {
+            document.getElementById('orderForm').style.display = 'block';
+        }
+
+        function closeModal() {
+            document.getElementById('orderForm').style.display = 'none';
+        }
+    </script>
     <script src="Orders/orderScript.js"></script>
 </body>
 </html>

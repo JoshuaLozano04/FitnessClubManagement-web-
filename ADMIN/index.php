@@ -176,6 +176,7 @@ $notificationCount = $unreadNotifications['unread_count'];
                         'report' => 'Review',
                         'Orders/orders' => 'Orders',
                         'Orders/editOrder' => 'Edit Order',
+                        'Orders/delete' => 'Delete Order',
                         'Inventory/inventory' => 'Inventory',
                         'Inventory/editInventory' => 'Edit Inventory',
                         'Users/users' => 'User Account'
@@ -184,6 +185,7 @@ $notificationCount = $unreadNotifications['unread_count'];
                 ?>
             </div>
 
+            <!-- Right side of the header -->
             <!-- Right side of the header -->
             <div class="header-right">
                 <button class="notification-btn" onclick="toggleNotifications()">
@@ -268,7 +270,7 @@ $notificationCount = $unreadNotifications['unread_count'];
         </div>
 
         <?php
-        $allowed_pages = ['dashboard', 'Members/members', 'Members/editMembers', 'Schedule/schedule', "Schedule/manageRequest",'Attendance/attendance', 'report', 'Inventory/inventory', 'Inventory/editInventory', 'Orders/orders', 'Orders/editOrder', 'Users/users'];
+        $allowed_pages = ['dashboard', 'Members/members', 'Members/editMembers', 'Schedule/schedule', "Schedule/manageRequest",'Attendance/attendance', 'report', 'Inventory/inventory', 'Inventory/editInventory', 'Orders/orders', 'Orders/editOrder','Orders/delete', 'Users/users'];
         $page = $_GET['page'] ?? 'dashboard';
         if (in_array($page, $allowed_pages)) {
             include "$page.php";
